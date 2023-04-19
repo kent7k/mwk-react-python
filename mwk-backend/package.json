@@ -1,0 +1,15 @@
+{
+  "name": "mwk",
+  "version": "1.0.0",
+  "devDependencies": {
+    "danger": "11.2.6",
+    "redoc-cli": "0.13.21"
+  },
+  "resolutions": {
+    "colors": "1.4.0"
+  },
+  "scripts": {
+    "swagger": "redoc-cli bundle docs/swagger.yaml -o docs/swagger.html",
+    "danger": "danger"
+  }
+}
