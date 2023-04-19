@@ -1,0 +1,21 @@
+openapi: 3.0.0
+info:
+  title: MWK API
+  description: MWK API for third party developers
+  version: 1.9.0
+paths:
+  /status:
+    get:
+      description: Returns the status of whether the API is functioning or not. If this API returns 200, the API server is functioning properly.
+      operationId: getStatus
+      tags:
+        - status
+      security:
+        - AuthToken: []
+      responses:
+        '200':
+          description: The API is functioning properly.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
