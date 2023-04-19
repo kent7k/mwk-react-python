@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+    backend:
+        container_name: mwk-backend
+        build: ./mwk-backend
+        command: python manage.py runserver 0.0.0.0:8000
+        ports:
+            - "8000:8000"
+        env_file:
+            - mwk-backend/config/.env
+        environment:
+            - CACHE_LOCATION=redis://backend_redis:6379
+            - CACHE_BACKEND=django.core.cache.backends.redis.RedisCache
+            - SQL_ENGINE=django.db.backends.postgresql
+            - SQL_DATABASE=postgresql
+        depends_on:
+            - backend_redis
+            - backend_database
+
+    backend_redis:
+        container_name: mwk-redis
+        image: redis:7.0.4-alpine
+        ports:
+            - "6379:6378"
+
+    backend_database:
+        container_name: mwk-db
+        image: postgres:14.5-alpine
+        volumes:
+            - backend_postgres_data:/var/lib/postgresql/data/
+        env_file:
+            - mwk-backend/config/.env
+        ports:
+            - "5433:5432"
+
+    frontend:
+        container_name: mwk-frontend
+        build: ./mwk-frontend
+        command: yarn start
+        ports:
+            - 3000:3000
+        depends_on:
+            - backend
+
+volumes:
+    backend_postgres_data:
