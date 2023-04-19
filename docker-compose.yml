@@ -35,14 +35,14 @@ services:
         ports:
             - "5433:5432"
 
-#    frontend:
-#        container_name: mwk-frontend
-#        build: ./mwk-frontend
-#        command: yarn start
-#        ports:
-#            - 3000:3000
-#        depends_on:
-#            - backend
+    frontend:
+        container_name: mwk-frontend
+        build: ./mwk-frontend
+        command: yarn start
+        ports:
+            - 3000:3000
+        depends_on:
+            - backend
 
 volumes:
     backend_postgres_data:
