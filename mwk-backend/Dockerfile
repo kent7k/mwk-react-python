@@ -6,17 +6,16 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install ruamel_yaml dependency
-# --- Note about dependencies ---
-# lxml: libxml2-dev libxslt-dev
-# Pillow: jpeg-dev zlib-dev libjpeg
-# cffi: libffi-dev
-# -------------------------------
-
 RUN apk add --no-cache \
     gcc musl-dev python3-dev \
     libxml2-dev libxslt-dev \
     jpeg-dev zlib-dev libjpeg \
     libffi-dev
+# --- Note about dependencies ---
+# lxml: libxml2-dev libxslt-dev
+# Pillow: jpeg-dev zlib-dev libjpeg
+# cffi: libffi-dev
+# -------------------------------
 
 RUN pip install --upgrade pip
 COPY ./requirements ./requirements
