@@ -19,8 +19,6 @@ env = environ.Env(
     SQL_HOST=(str, 'localhost'),
     SQL_PORT=(str, '5432'),
 )
-
-
 environ.Env.read_env()
 
 # Services
@@ -57,7 +55,6 @@ MIDDLEWARE = [
 ]
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Application definition
 PREREQ_APPS = [
     # Django
@@ -83,8 +80,6 @@ PROJECT_APPS = [
 ]
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS
 
-
-
 # Templates
 TEMPLATES = [
     {
@@ -107,7 +102,6 @@ TEMPLATES = [
 # URLs
 ROOT_URLCONF = env('ROOT_URLCONF', default='config.urls')
 
-
 # Database
 def get_database_name() -> str:
     if env('SQL_DATABASE') == 'postgresql':
@@ -128,7 +122,6 @@ DATABASES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # Caches
 CACHES = {
     'default': {
@@ -136,7 +129,6 @@ CACHES = {
         'LOCATION': env('CACHE_LOCATION'),
     },
 }
-
 
 # Email
 EMAIL_HOST = env('EMAIL_HOST')
@@ -146,11 +138,9 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-
 # Activation email
 AUTHENTICATION_SITENAME = 'MWK'
 USER_ACTIVATION_URL = env('USER_ACTIVATION_URL') + '{}/{}'
-
 
 # Internationalization
 LANGUAGE_CODE = 'en'
@@ -163,7 +153,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 # LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
-
 
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -202,7 +191,6 @@ REST_KNOX = {
     'USER_SERIALIZER': 'mwk.modules.authentication.serializers.LoginPayloadSerializer',
 }
 
-
 # Debug toolbar
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -212,7 +200,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda _: DEBUG,
 }
 
-
 # OpenAPI Schema
 SPECTACULAR_SETTINGS = {
     'TITLE': 'MWK API',
@@ -220,7 +207,6 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '0.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
-
 
 # REST framework
 REST_FRAMEWORK = {
