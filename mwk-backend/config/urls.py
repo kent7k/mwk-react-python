@@ -33,8 +33,6 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     # Apps
     path("", include('mwk.modules.authentication.urls')),
-    path('feed/', include('mwk.modules.main.urls')),
-    path('peoples/', include('mwk.modules.profiles.urls')),
     # Documentation
     path('docs/schema/', SpectacularAPIView.as_view(), name='docs_schema'),
     path(
