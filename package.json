@@ -1,0 +1,11 @@
+{
+  "name": "mwk-react-python",
+  "repository": "git@github.com:kent7k/mwk-react-python.git",
+  "version": "0.1.0",
+  "devDependencies": {
+    "husky": "8.0.3"
+  },
+  "scripts": {
+     "postinstall": "husky install"
+  }
+}
