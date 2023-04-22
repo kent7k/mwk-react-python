@@ -1,0 +1,107 @@
+{
+    "name": "mwk-frontend",
+    "private": true,
+    "dependencies": {
+        "@emotion/react": "11.10.0",
+        "@emotion/styled": "11.10.0",
+        "@mui/icons-material": "5.8.4",
+        "@mui/lab": "5.0.0-alpha.100",
+        "@mui/material": "5.10.0",
+        "@mui/x-date-pickers": "5.0.0-beta.5",
+        "@reduxjs/toolkit": "1.8.5",
+        "@testing-library/jest-dom": "5.16.4",
+        "@testing-library/react": "13.3.0",
+        "@testing-library/user-event": "13.5.0",
+        "axios": "1.3.3",
+        "clsx": "1.2.1",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-redux": "8.0.4",
+        "react-router-dom": "6.3.0",
+        "react-scripts": "5.0.1",
+        "redux": "4.2.1",
+        "redux-thunk": "2.4.2"
+    },
+    "description": "",
+    "devDependencies": {
+        "@babel/core": "7.21.0",
+        "@types/jest": "29.4.0",
+        "@types/node": "18.14.2",
+        "@types/react": "18.0.28",
+        "@types/react-dom": "18.0.11",
+        "@types/react-modal": "3.13.1",
+        "@types/react-syntax-highlighter": "15.5.6",
+        "@typescript-eslint/eslint-plugin": "5.54.0",
+        "@typescript-eslint/parser": "5.54.0",
+        "babel-jest": "29.4.3",
+        "babel-loader": "9.1.2",
+        "eslint": "8.35.0",
+        "eslint-config-airbnb": "19.0.4",
+        "eslint-config-airbnb-typescript": "17.0.0",
+        "eslint-config-prettier": "8.6.0",
+        "eslint-plugin-import": "2.27.5",
+        "eslint-plugin-jsx-a11y": "6.7.1",
+        "eslint-plugin-react": "7.32.2",
+        "eslint-plugin-react-hooks": "4.6.0",
+        "eslint-plugin-simple-import-sort": "10.0.0",
+        "eslint-plugin-sort-export-all": "1.2.2",
+        "jest": "29.4.2",
+        "jest-environment-jsdom": "29.4.2",
+        "jest-watch-typeahead": "2.2.0",
+        "lint-staged": "13.1.2",
+        "npm-run-all": "4.1.5",
+        "prettier": "2.8.4",
+        "rimraf": "4.1.2",
+        "stylelint": "14.16.0",
+        "stylelint-config-prettier": "9.0.4",
+        "stylelint-config-recess-order": "3.1.0",
+        "stylelint-config-standard-scss": "6.1.0",
+        "ts-node": "10.9.1",
+        "typescript": "4.9.5"
+    },
+    "resolutions": {
+        "colors": "1.4.0",
+        "@types/react": "18.0.28",
+        "@types/react-dom": "18.0.10"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "fix": "npm-run-all -p fix:*",
+        "fix:code": "run-s format:eslint format:prettier",
+        "fix:style": "stylelint --fix 'src/**/*.{css,scss}'",
+        "format:eslint": "yarn lint:eslint --fix",
+        "format:prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+        "lint": "run-p -l lint:*",
+        "lint:eslint": "eslint --cache 'src/**/*.ts{,x}'",
+        "lint:locale": "comparejson -e ./src/locales/*.json",
+        "lint:md": "markdownlint README.md",
+        "lint:style": "stylelint 'src/**/*.{css,scss}'",
+        "test-all": "yarn lint && yarn type-check && yarn test",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "watch": "run-p -l watch:*",
+        "watch:ts": "tsc -p tsconfig.json -w --noEmit",
+        "watch:scss": "typed-scss-modules src --watch"
+    },
+    "version": "0.1.0"
+}
