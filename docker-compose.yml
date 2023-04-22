@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
     backend:
-        container_name: mwk-backend
+        container_name: mwk-v2-backend
         build: ./mwk-backend
         command: python manage.py runserver 0.0.0.0:8000
         ports:
@@ -20,13 +20,13 @@ services:
             - backend_database
 
     backend_redis:
-        container_name: mwk-redis
+        container_name: mwk-v2-redis
         image: redis:7.0.4-alpine
         ports:
             - "6379:6378"
 
     backend_database:
-        container_name: mwk-db
+        container_name: mwk-v2-db
         image: postgres:14.5-alpine
         volumes:
             - backend_postgres_data:/var/lib/postgresql/data/
@@ -35,14 +35,14 @@ services:
         ports:
             - "5433:5432"
 
-    frontend:
-        container_name: mwk-frontend
-        build: ./mwk-frontend
-        command: yarn start
-        ports:
-            - 3000:3000
-        depends_on:
-            - backend
+#    frontend:
+#        container_name: mwk-v2-frontend
+#        build: ./mwk-frontend
+#        command: yarn start
+#        ports:
+#            - 3000:3000
+#        depends_on:
+#            - backend
 
 volumes:
     backend_postgres_data:
