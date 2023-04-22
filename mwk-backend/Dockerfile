@@ -31,7 +31,7 @@ RUN pip install \
 COPY . .
 
 # copy entrypoint.sh & execute
-COPY scripts/entrypoint.sh .
+COPY resources/entrypoint.sh .
 RUN sed -i 's/\r$//g' /mwk/backend/entrypoint.sh
 RUN chmod +x /mwk/backend/entrypoint.sh
 ENTRYPOINT ["/mwk/backend/entrypoint.sh"]
