@@ -1,0 +1,34 @@
+/* Base */
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+textarea::-webkit-scrollbar {
+  width: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.flexAlignBox {
+  display: flex;
+  align-items: center;
+}
+
+.flexBetweenBox {
+  display: flex;
+  justify-content: space-between;
+}
