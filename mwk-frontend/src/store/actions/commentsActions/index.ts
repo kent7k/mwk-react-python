@@ -1,0 +1,6 @@
+export * from './addComment'
+export * from './commentLike'
+export * from './getCommentDescendants'
+export * from './getCommentDescendantsWrapper'
+export * from './getComments'
+export * from './getCommentsWrapper'
