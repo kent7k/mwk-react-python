@@ -1,0 +1,7 @@
+.comments > .comment:last-child > .commentDivider {
+  display: none;
+}
+
+.comment > .commentReplies:last-child .commentDivider {
+  display: none;
+}
