@@ -76,7 +76,9 @@ PREREQ_APPS = [
 ]
 
 PROJECT_APPS = [
+    'mwk.modules.main.apps.MainConfig',
     'mwk.modules.authentication.apps.AuthenticationConfig',
+    'mwk.modules.profiles.apps.ProfilesConfig',
 ]
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS
 
