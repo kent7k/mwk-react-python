@@ -1,0 +1,321 @@
+.registerMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Roboto, sans-serif;
+
+  /* background: #F1F5FE; */
+  background-color: #fff;
+}
+
+.invalidTooltip {
+  font-size: 0.85em;
+}
+
+.invalidFeedback {
+  font-size: 0.85em;
+}
+
+.registerForm .alert {
+  order: 1;
+}
+
+/* Circle */
+
+.circle {
+  position: absolute;
+  z-index: 1;
+  width: 2534px;
+  height: 2534px;
+  background: #f7faff;
+  border-radius: 50%;
+  box-shadow: 0 4px 70px 6px rgb(217 229 255 / 25%);
+  animation-name: fade-circle;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.circleLogin {
+  width: 1950px;
+  height: 1950px;
+  animation-name: fade-circle-login;
+}
+
+@keyframes fade-circle-login {
+  0% {
+    width: 2250px;
+    height: 2250px;
+  }
+
+  25% {
+    width: 1750px;
+    height: 1750px;
+  }
+
+  50% {
+    width: 1250px;
+    height: 1250px;
+  }
+
+  75% {
+    width: 750px;
+    height: 750px;
+  }
+
+  100% {
+    width: 450px;
+    height: 450px;
+  }
+}
+
+/* Animations */
+
+@keyframes fade-circle {
+  0% {
+    width: 2534px;
+    height: 2534px;
+  }
+
+  25% {
+    width: 2000px;
+    height: 2000px;
+  }
+
+  50% {
+    width: 1500px;
+    height: 1500px;
+  }
+
+  75% {
+    width: 1000px;
+    height: 1000px;
+  }
+
+  100% {
+    width: 534px;
+    height: 534px;
+  }
+}
+
+@keyframes fade-form {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  75% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Register form */
+
+.registerFormDisc {
+  display: flex;
+  flex-direction: column;
+}
+
+.registerFormTitle {
+  margin-bottom: 24px;
+  font-size: 21.5px;
+  font-weight: 500;
+  line-height: 23px;
+  color: #364e6d;
+  text-align: center;
+}
+
+.registerFormInput {
+  width: 100%;
+  height: 45px;
+  padding-left: 25px;
+  font-size: 14px;
+  line-height: 16px;
+  border: 2px solid #e9f2ff;
+  border-color: #7ab1ff81;
+  border-radius: 5px;
+  appearance: none;
+}
+
+.registerFormInput:focus {
+  border: 2px solid #3c89fcad;
+  outline: 0;
+}
+
+.registerFormInputValid {
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 3px) center;
+  background-size: calc(0.75em + 6px) calc(0.75em + 6px);
+  border-color: #00ff738e;
+}
+
+.registerFormInputNotValid {
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 3px) center;
+  background-size: calc(0.75em + 6px) calc(0.75em + 6px);
+  border-color: #ec425371;
+}
+
+.registerFormContainer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  padding: 31px 30px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 20px;
+  border-radius: 0;
+  box-shadow: 0 6px 50px rgb(217 229 255 / 70%);
+  box-shadow: none;
+  opacity: 0;
+  animation-name: fade-form;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 1.4s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.registerFormField {
+  position: relative;
+
+  /* margin-bottom: 15px; */
+  padding-top: 16px;
+}
+
+.registerFormField:first-child {
+  padding-top: 0;
+}
+
+.registerFormField:hover .invalidTooltip {
+  display: block;
+}
+
+.registerFormButtons {
+  margin-top: 16px;
+}
+
+.registerFormBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 45px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #00e91f;
+  border: 0;
+  border-radius: 5px;
+  transition: background 0.2s linear;
+}
+
+.registerFormBtn:hover {
+  background: #00dd0b;
+}
+
+.registerFormBtn:focus {
+  outline: 0;
+}
+
+.registerFormBtnSign {
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background: #185ebb;
+}
+
+.registerFormBtnSign:hover {
+  color: #fff;
+  background: #1957a8;
+}
+
+.registerFormDivider {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.registerForm .alert ~ .registerFormTitle {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .registerFormContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .invalidFeedback {
+    display: block;
+    font-size: 0.84em;
+  }
+
+  .registerFormCol {
+    flex: none;
+  }
+
+  .registerFormField:hover .invalidTooltip {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .registerMain {
+    background-color: #fff;
+  }
+
+  .circle {
+    display: none;
+  }
+
+  .registerFormContainer {
+    padding: 27px 26px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .registerFormTitle {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .registerFormInput {
+    height: 44px;
+  }
+
+  .registerFormDivider {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-size: 14px;
+  }
+
+  .registerFormBtn {
+    height: 42px;
+    font-size: 13.4px;
+  }
+}
