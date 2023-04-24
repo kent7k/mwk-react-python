@@ -1,0 +1,72 @@
+.page404Container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+  font-family: 'Lucida Console', Monaco, monospace;
+  background-image: url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f?dpr=2&fit=crop&fm=jpg&h=960&ixlib=rb-0.3.5&q=50&w=1440');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.page404Content {
+  position: relative;
+  box-sizing: border-box;
+  width: 500px;
+  height: 300px;
+  padding: 45px 20px 20px;
+  background-color: #333;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0 25px rgb(0 0 0 / 50%);
+}
+
+.page404BrowserBar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  overflow: hidden;
+  background: #f9f9f3;
+  border-radius: 5px 5px 0 0;
+}
+
+.page404BrowserBarIcons {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.page404Button {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+
+.page404Close {
+  background: #fc635d;
+}
+
+.page404Min {
+  background: #fdbc40;
+}
+
+.page404Max {
+  background: #34c84a;
+}
+
+.page404BrowserBarTitle {
+  flex-grow: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+}
