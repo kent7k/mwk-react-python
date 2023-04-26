@@ -21,9 +21,6 @@ class CommentViewSet(IsAuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSe
     serializer_class = CommentSerializer
     update_serializer_class = CommentUpdateSerializer
 
-    def get_queryset(self):
-        return get_comments(self.request.user)
-
     def get_serializer_context(self) -> dict:
         return {
             'request': self.request,
@@ -33,10 +30,7 @@ class CommentViewSet(IsAuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSe
         }
 
     def get_serializer_class(self) -> Type[Serializer]:
-        if self.request.method == 'PATCH':
-            return self.update_serializer_class
-
-        return super().get_serializer_class()
+        return self.update_serializer_class if self.request.method == 'PATCH' else super().get_serializer_class()
 
     @action(detail=True, methods=['get'])
     def get_descendants(self, request, pk: int = None):
@@ -65,9 +59,7 @@ class CommentViewSet(IsAuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSe
 
         comment = get_object_or_404(Comment, pk=pk)
 
-        is_like = comment.like(request.user)
+        action = 'add' if comment.like(request.user) else 'remove'
 
-        if is_like:
-            return Response({'action': 'add'})
+        return Response({'action': action})
 
-        return Response({'action': 'remove'})
