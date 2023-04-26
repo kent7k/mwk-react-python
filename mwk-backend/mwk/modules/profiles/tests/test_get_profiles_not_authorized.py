@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 
 from mwk.modules.authentication.models import Profile
 
-from .serializers import ProfileSerializer
+from mwk.modules.profiles.serializers import ProfileSerializer
 
 
 class ProfileTests(APITestCase):
@@ -64,30 +64,6 @@ class ProfileTests(APITestCase):
 
         return profiles
 
-    def test_get_me_not_authorized(self):
-        """Test getting self profile unauthorized"""
-
-        url = reverse('profile_details')
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 401)
-
-    def test_get_me(self):
-        """Test getting self profile"""
-
-        url = reverse('profile_details')
-        self.authenticate(self.token)
-
-        profile = self.setup_user_profile(self.user)
-
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 200)
-
-        serializer_data = ProfileSerializer(instance=profile).data
-
-        self.assertEqual(response.data, serializer_data)
-
     def test_get_profiles_not_authorized(self):
         """Test getting profiles not authorized"""
 
@@ -95,37 +71,3 @@ class ProfileTests(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 401)
-
-    def test_get_profiles(self):
-        """Test getting profiles"""
-
-        url = reverse('profiles')
-        self.authenticate(self.token)
-
-        self.create_profiles()
-        profiles = Profile.objects.all()
-
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 200)
-
-        serializer_data = ProfileSerializer(instance=profiles, many=True).data
-
-        self.assertEqual(response.data.get('results'), serializer_data)
-
-    def test_get_profile(self):
-        """Test getting profile"""
-
-        self.create_profiles()
-        profile = Profile.objects.last()
-
-        url = reverse('profile', kwargs={'pk': profile.id})
-        self.authenticate(self.token)
-
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 200)
-
-        serializer_data = ProfileSerializer(instance=profile).data
-
-        self.assertEqual(response.data, serializer_data)
