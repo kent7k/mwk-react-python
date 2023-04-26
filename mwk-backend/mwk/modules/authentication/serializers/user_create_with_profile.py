@@ -11,7 +11,7 @@ from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
 
 from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
 from mwk.modules.authentication.services import register_user
-from mwk.modules.authentication.serializers.ProfileCreateSerializer import ProfileCreateSerializer
+from mwk.modules.authentication.serializers.profile_create import ProfileCreateSerializer
 
 
 class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer):
