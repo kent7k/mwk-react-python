@@ -31,12 +31,19 @@ class LikeTestCase(APITestCase):
     def authenticate(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
-    def test_unauthorized_post_like(self):
-        """A test to check unauthorized user can't likes and remove likes on a post"""
-
-        self.client.credentials()
+    def test_bad_data_post_like(self):
+        """Test to check the post like with bad data"""
         url = reverse('like')
+        data = {'post': 245}
+        response = self.client.put(url, data)
+        self.assertEqual(response.status_code, 404)
+
         data = {'post_id': self.post.id}
         response = self.client.put(url, data)
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 400)
+
+        data = {'post': []}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, 400)

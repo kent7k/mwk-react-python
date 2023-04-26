@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from knox.models import AuthToken
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from mwk.modules.main.models import Comment, Post, PostCategory
@@ -31,12 +32,10 @@ class LikeTestCase(APITestCase):
     def authenticate(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
-    def test_unauthorized_post_like(self):
-        """A test to check unauthorized user can't likes and remove likes on a post"""
-
-        self.client.credentials()
+    def test_without_data_post_like(self):
+        """Test to check the post like without data"""
         url = reverse('like')
-        data = {'post_id': self.post.id}
+        data = {}
         response = self.client.put(url, data)
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
