@@ -49,30 +49,19 @@ class CommentsTestCase(APITestCase):
             for _ in range(page_size)
         )
 
-        comments = Comment.objects.bulk_create(comment_objects)
-
-        return comments
+        return Comment.objects.bulk_create(comment_objects)
 
     def get_comments(self, page_size: int = api_settings.PAGE_SIZE):
-        """Create comments and return ready queryset"""
-
         self.create_comments(page_size)
-
         return get_post_comments(self.user, self.post.id)
 
     def test_get_comments(self):
-        """Test getting comments"""
-
         url = reverse('post_comments', kwargs={'pk': self.post.id})
-
         comments = self.get_comments()
-
         self.authenticate(self.token)
         response = self.client.get(url)
-
-        serializer_data = CommentSerializer(
-            instance=comments, many=True, context={'request': response.wsgi_request}
-        ).data
-
+        serializer = CommentSerializer(
+            comments, many=True, context={'request': response.wsgi_request}
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get('results'), serializer_data)
+        self.assertEqual(response.data.get('results'), serializer.data)

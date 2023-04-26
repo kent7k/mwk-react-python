@@ -62,10 +62,7 @@ class AuthenticationTestCase(APITestCase):
         inactive_user.save()
 
         url = reverse('login')
-        data = {
-            'username': inactive_user.username,
-            'password': self.password,
-        }
+        data = {'username': inactive_user.username, 'password': self.password}
         response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, 400)

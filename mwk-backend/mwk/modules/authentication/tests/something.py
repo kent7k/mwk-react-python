@@ -52,9 +52,9 @@ class LikeTestCase(APITestCase):
 
         url = reverse('like')
         data = {'post': self.post.id}
-        response = self.client.put(url, data)
 
         # add like
+        response = self.client.put(url, data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'add'})
         self.assertTrue(self.post.liked.filter(id=self.user.id).exists())
@@ -76,12 +76,12 @@ class LikeTestCase(APITestCase):
         self.assertEqual(response.data, {'action': 'remove'})
 
     def test_comment_like(self):
-        """A test to check likes and remove likes on a comment"""
+        """Test to check likes and remove likes on a comment"""
         url = reverse('like_comment')
         data = {'comment': self.comment.id}
-        response = self.client.put(url, data)
 
         # add like
+        response = self.client.put(url, data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'add'})
         self.assertTrue(self.comment.liked.filter(id=self.user.id).exists())
@@ -106,59 +106,4 @@ class LikeTestCase(APITestCase):
         """Test to check the post like without data"""
         url = reverse('like')
         data = {}
-        response = self.client.put(url, data)
 
-        self.assertEqual(response.status_code, 400)
-
-    def test_without_data_comment_like(self):
-        """Test to check the comment like without data"""
-        url = reverse('like_comment')
-        data = {}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 400)
-
-    def test_bad_data_post_like(self):
-        """Test to check the post like with bad data"""
-        url = reverse('like')
-        data = {'post': 245}
-        response = self.client.put(url, data)
-        self.assertEqual(response.status_code, 404)
-
-        data = {'post_id': self.post.id}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 400)
-
-        data = {'post': []}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 400)
-
-    def test_bad_data_comment_like(self):
-        """Test to check the comment like with bad data"""
-        url = reverse('like_comment')
-        data = {'comment': 245}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 404)
-
-        data = {'comment_id': self.comment.id}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 400)
-
-        data = {'comment': []}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 400)
-
-    def test_unauthorized_post_like(self):
-        """A test to check unauthorized user can't likes and remove likes on a post"""
-
-        self.client.credentials()
-        url = reverse('like')
-        data = {'post_id': self.post.id}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, 401)

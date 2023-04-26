@@ -18,7 +18,6 @@ class PostsTestCase(APITestCase):
     def setUp(self) -> None:
         self.email = 'poststestcase@gmail.com'
         self.password = 'asd123321'
-
         self.user = User.objects.create_user('PostsTestCase', self.email, self.password)
         self.token: str = AuthToken.objects.create(self.user)[-1]
 
@@ -57,13 +56,11 @@ class PostsTestCase(APITestCase):
 
         url = reverse('feed')
         posts = self.get_posts()
-
         self.authenticate(self.token)
         response = self.client.get(url)
-
-        serializer_data = PostSerializer(
+        serializer = PostSerializer(
             instance=posts, many=True, context={'request': response.wsgi_request}
-        ).data
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get('results'), serializer_data)
+        self.assertEqual(response.data.get('results'), serializer.data)

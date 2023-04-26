@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from knox.models import AuthToken
+from rest_framework import status
 from rest_framework.test import APITestCase
 
 from mwk.modules.main.models import Comment, Post, PostCategory
@@ -39,4 +40,4 @@ class LikeTestCase(APITestCase):
         data = {'comment_id': self.comment.id}
         response = self.client.put(url, data)
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
