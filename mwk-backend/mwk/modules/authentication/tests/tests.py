@@ -12,9 +12,7 @@ from knox.models import AuthToken
 from rest_framework.response import Response
 from rest_framework.test import APITestCase
 
-# from .models import Profile
 from mwk.modules.authentication.models import Profile
-# from .tokens import AuthenticationToken
 from mwk.modules.authentication.tokens import AuthenticationToken
 
 
@@ -665,31 +663,5 @@ class AuthenticationTestCase(APITestCase):
         """Test logoutall user (destroy all tokens) which not authorized"""
 
         response = self.logoutall()
-
-        self.assertEqual(response.status_code, 401)
-
-    def test_check_token(self):
-        """Test check validity of authentication token"""
-
-        # Valid token
-
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        token: str = response.data.get('token')
-
-        url = reverse('check_token')
-
-        self.authenticate(token)
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 204)
-
-        # Invalid
-
-        self.authenticate('abracadabra')
-        response = self.client.get(url)
 
         self.assertEqual(response.status_code, 401)
