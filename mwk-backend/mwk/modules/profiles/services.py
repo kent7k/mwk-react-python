@@ -1,6 +1,3 @@
-"""Services for the profiles app"""
-
-
 from mwk.modules.authentication.models import Profile
 
 
