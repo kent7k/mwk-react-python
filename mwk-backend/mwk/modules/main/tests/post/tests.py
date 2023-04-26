@@ -17,7 +17,6 @@ class PostsTestCase(APITestCase):
     def setUp(self) -> None:
         self.email = 'poststestcase@gmail.com'
         self.password = 'asd123321'
-
         self.user = User.objects.create_user('PostsTestCase', self.email, self.password)
         self.token: str = AuthToken.objects.create(self.user)[-1]
 

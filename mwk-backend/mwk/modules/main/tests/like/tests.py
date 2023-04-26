@@ -32,7 +32,7 @@ class LikeTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
     def test_get_post_like(self):
-        """A test to check GET request on the post like return HTTP 405"""
+        """Test to check GET request on the post like return HTTP 405"""
 
         url = reverse('like')
         response = self.client.get(url)
@@ -40,7 +40,7 @@ class LikeTestCase(APITestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_get_comment_like(self):
-        """A test to check GET request on the comment like return HTTP 405"""
+        """Test to check GET request on the comment like return HTTP 405"""
 
         url = reverse('like_comment')
         response = self.client.get(url)
@@ -48,29 +48,30 @@ class LikeTestCase(APITestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_post_like(self):
-        """A test to check likes and remove likes on a post"""
+        """Test to check likes and remove likes on a post"""
 
         url = reverse('like')
         data = {'post': self.post.id}
         response = self.client.put(url, data)
 
+        # add like
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'add'})
         self.assertTrue(self.post.liked.filter(id=self.user.id).exists())
 
+        # remove like
         response = self.client.put(url, data)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'remove'})
         self.assertFalse(self.post.liked.filter(id=self.user.id).exists())
 
+        # add like again
         response = self.client.put(url, data)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'add'})
 
+        # remove like again
         response = self.client.put(url, data)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'remove'})
 
@@ -80,23 +81,24 @@ class LikeTestCase(APITestCase):
         data = {'comment': self.comment.id}
         response = self.client.put(url, data)
 
+        # add like
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'add'})
         self.assertTrue(self.comment.liked.filter(id=self.user.id).exists())
 
+        # remove like
         response = self.client.put(url, data)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'remove'})
         self.assertFalse(self.comment.liked.filter(id=self.user.id).exists())
 
+        # add like again
         response = self.client.put(url, data)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'add'})
 
+        # remove like again
         response = self.client.put(url, data)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {'action': 'remove'})
 
