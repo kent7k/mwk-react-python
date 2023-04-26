@@ -1,23 +1,8 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from mwk.modules.authentication.models import Profile
-
-
-class UserSerializer(serializers.ModelSerializer):
-    groups = serializers.StringRelatedField(many=True, read_only=True)
-
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'groups']
-
-
-class FollowersSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-
-    class Meta:
-        model = Profile
-        fields = ['user', 'avatar']
+from mwk.modules.profiles.serializers.FollowersSerializer import FollowersSerializer
+from mwk.modules.profiles.serializers.UserSerializer import UserSerializer
 
 
 class ProfileSerializer(serializers.ModelSerializer):
