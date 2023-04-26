@@ -2,6 +2,7 @@ import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
+from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -60,10 +61,15 @@ class AuthenticationTestCase(APITestCase):
 
         return response
 
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
+    def test_registration_with_existing_username(self):
+        """A test that tries to register with already existing username"""
 
         url = reverse('reg')
-        data = {}
-        response = self.client.post(url, data)
+        data = copy.deepcopy(self.register_data)
+        data['username'] = self.user.username
+
+        response = self.client.post(url, data, format='json')
+
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('username')[0].code, 'unique')

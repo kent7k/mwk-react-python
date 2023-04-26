@@ -53,17 +53,24 @@ class AuthenticationTestCase(APITestCase):
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
-
-        return response
-
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
+    def test_registration_with_bad_password(self):
+        """A test that tries to register with bad password"""
 
         url = reverse('reg')
-        data = {}
-        response = self.client.post(url, data)
+        data = copy.deepcopy(self.register_data)
+        data['password'] = 'asd1233'
+
+        response = self.client.post(url, data, format='json')
+
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('password')[0].code, 'password_too_short')
+
+        data = copy.deepcopy(self.register_data)
+        data['password'] = 'qwerty1234'
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('password')[0].code, 'password_too_common')

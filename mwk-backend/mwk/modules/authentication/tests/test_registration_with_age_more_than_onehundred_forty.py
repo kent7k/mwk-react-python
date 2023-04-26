@@ -2,6 +2,7 @@ import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
+from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -53,17 +54,23 @@ class AuthenticationTestCase(APITestCase):
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
-
-        return response
-
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
+    def test_registration_with_age_more_than_onehundred_forty(self):
+        """Test register with age more than one hundred forty"""
 
         url = reverse('reg')
-        data = {}
-        response = self.client.post(url, data)
+
+        data = copy.deepcopy(self.register_data)
+        data['profile']['birthday'] = (
+            (datetime.today() - timedelta(days=(365 * 142))).date().strftime('%Y-%m-%d')
+        )
+        response = self.client.post(url, data, format='json')
+
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+
+        profile = response.data.get('profile')
+        self.assertEqual(len(profile), 1)
+
+        self.assertEqual(
+            profile.get('birthday')[0].code, 'age_more_than_onehundred_forty'
+        )

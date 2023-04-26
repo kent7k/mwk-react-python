@@ -60,10 +60,10 @@ class AuthenticationTestCase(APITestCase):
 
         return response
 
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
+    def test_login_without_data(self):
+        """A test that tries to login without data"""
 
-        url = reverse('reg')
+        url = reverse('login')
         data = {}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 400)

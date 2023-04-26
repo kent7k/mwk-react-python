@@ -2,15 +2,12 @@ from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.db.models import Count, Exists, OuterRef
-from django.urls import reverse
 from django.utils import timezone
 from knox.models import AuthToken
 from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
 from mwk.modules.main.models import Comment, Post, PostCategory
-from mwk.modules.main.serializers import CommentSerializer, PostCategorySerializer, PostSerializer
-from mwk.modules.main.services import get_post_comments
 from mwk.modules.main.services import get_posts as get_posts_queryset
 
 
@@ -53,55 +50,6 @@ class PostsTestCase(APITestCase):
         self.create_posts(page_size)
 
         return get_posts_queryset(self.user)
-
-    def test_get_posts_not_authorized(self):
-        """Test getting posts not authorized"""
-
-        url = reverse('feed')
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 401)
-
-    def test_put_posts(self):
-        """Test PUT request to posts raises 405 HTTP error"""
-
-        url = reverse('feed')
-        self.get_posts()
-
-        self.authenticate(self.token)
-        response = self.client.put(url)
-
-        self.assertEqual(response.status_code, 405)
-
-    def test_get_posts(self):
-        """Test getting posts"""
-
-        url = reverse('feed')
-        posts = self.get_posts()
-
-        self.authenticate(self.token)
-        response = self.client.get(url)
-
-        serializer_data = PostSerializer(
-            instance=posts, many=True, context={'request': response.wsgi_request}
-        ).data
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get('results'), serializer_data)
-
-    def test_get_categories(self):
-        """Test getting post categories"""
-
-        url = reverse('post_categories')
-        categories = PostCategory.objects.all()
-
-        self.authenticate(self.token)
-        response = self.client.get(url)
-
-        serializer_data = PostCategorySerializer(instance=categories, many=True).data
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, serializer_data)
 
     def get_filtered_by_category_posts(
         self, category: PostCategory, posts: list[Post], category_posts_limit: int = 2
@@ -196,32 +144,3 @@ class PostsTestCase(APITestCase):
         posts = posts.filter(category=category).order_by(ordering)
 
         return posts
-
-    def test_put_post(self):
-        """Test PUT request to post raises 405 HTTP error"""
-
-        post = self.get_posts(3).last()
-
-        url = reverse('post', kwargs={'pk': post.id})
-
-        self.authenticate(self.token)
-        response = self.client.put(url)
-
-        self.assertEqual(response.status_code, 405)
-
-    def test_get_post(self):
-        """Test getting post"""
-
-        post = self.get_posts(3).last()
-
-        url = reverse('post', kwargs={'pk': post.id})
-
-        self.authenticate(self.token)
-        response = self.client.get(url)
-
-        serializer_data = PostSerializer(
-            instance=post, context={'request': response.wsgi_request}
-        ).data
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, serializer_data)

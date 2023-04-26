@@ -53,17 +53,17 @@ class AuthenticationTestCase(APITestCase):
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
-
-        return response
-
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
+    def test_registration_without_first_and_last_name(self):
+        """A test that tries to register without first and last names"""
 
         url = reverse('reg')
-        data = {}
-        response = self.client.post(url, data)
+        data = copy.deepcopy(self.register_data)
+        data.pop('first_name')
+        data.pop('last_name')
+
+        response = self.client.post(url, data, format='json')
+
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 2)
+        self.assertEqual(response.data.get('first_name')[0].code, 'required')
+        self.assertEqual(response.data.get('last_name')[0].code, 'required')

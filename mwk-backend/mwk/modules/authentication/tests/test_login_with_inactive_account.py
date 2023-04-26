@@ -53,17 +53,21 @@ class AuthenticationTestCase(APITestCase):
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def login(self):
+    def test_login_with_inactive_account(self):
+        """A test that tries to login with inactive account"""
+        inactive_user: User = User.objects.create_user(
+            'Authentication_test_case_Inactive', self.email, self.password
+        )
+        inactive_user.is_active = False
+        inactive_user.save()
+
         url = reverse('login')
-        data = self.login_data
+        data = {
+            'username': inactive_user.username,
+            'password': self.password,
+        }
         response = self.client.post(url, data)
 
-        return response
-
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
-
-        url = reverse('reg')
-        data = {}
-        response = self.client.post(url, data)
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('non_field_errors')[0].code, 'authorization')

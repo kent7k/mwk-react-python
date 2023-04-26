@@ -2,6 +2,7 @@ import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
+from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -60,10 +61,44 @@ class AuthenticationTestCase(APITestCase):
 
         return response
 
-    def test_registration_without_data(self):
-        """A test that tries to register without data"""
+    def test_registration_with_bad_username(self):
+        """A test that tries to register with bad username"""
 
         url = reverse('reg')
-        data = {}
-        response = self.client.post(url, data)
+        data = copy.deepcopy(self.register_data)
+        data['username'] = 'A*()!!371'
+
+        response = self.client.post(url, data, format='json')
+
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('username')[0].code, 'invalid')
+
+        data = copy.deepcopy(self.register_data)
+        data['username'] = 'Abo'
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('username')[0].code, 'min_length')
+
+        data = copy.deepcopy(self.register_data)
+        data['username'] = ascii_letters
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('username')[0].code, 'max_length')
+
+        data = copy.deepcopy(self.register_data)
+        data['username'] = 1111
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(
+            response.data.get('username')[0].code, 'username_contains_only_digits'
+        )
