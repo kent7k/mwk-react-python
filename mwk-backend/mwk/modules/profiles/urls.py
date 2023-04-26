@@ -1,9 +1,11 @@
 from django.urls import path
 
-from .views import ProfileAPIView, ProfileDetailAPIView, ProfileDetailsAPIView
+from mwk.modules.profiles.views.profile_api_view import ProfileListView
+from mwk.modules.profiles.views.profile_detail_api_view import ProfileDetailView
+from mwk.modules.profiles.views.profile_details_api_view import ProfileDetailsView
 
 urlpatterns = [
-    path("", ProfileAPIView.as_view(), name='profiles'),
-    path('<int:pk>/', ProfileDetailAPIView.as_view(), name='profile'),
-    path('me/', ProfileDetailsAPIView.as_view(), name='profile_details'),
+    path("", ProfileListView.as_view(), name='profiles'),
+    path('<int:pk>/', ProfileDetailView.as_view(), name='profile'),
+    path('me/', ProfileDetailsView.as_view(), name='profile_details'),
 ]
