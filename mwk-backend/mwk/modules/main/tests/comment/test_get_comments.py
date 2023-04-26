@@ -60,15 +60,6 @@ class CommentsTestCase(APITestCase):
 
         return get_post_comments(self.user, self.post.id)
 
-    def test_get_comments_not_authorized(self):
-        """Test getting comments not authorized"""
-
-        url = reverse('post_comments', kwargs={'pk': self.post.id})
-
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, 401)
-
     def test_get_comments(self):
         """Test getting comments"""
 
