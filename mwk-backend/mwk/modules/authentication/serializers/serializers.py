@@ -9,13 +9,15 @@ from django.utils.translation import gettext as _
 from djoser.serializers import ActivationSerializer as DjoserActivationSerializer
 from drf_extra_fields.fields import HybridImageField
 from rest_framework import serializers
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
 
-from .helpers import contains_digits, is_age_at_least
-from .models import Profile
-from .services import register_user
+# from .helpers import contains_digits, is_age_at_least
+from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
+# from .models import Profile
+from mwk.modules.authentication.models import Profile
+# from .services import register_user
+from mwk.modules.authentication.services import register_user
 
 
 class ProfileCreateSerializer(
@@ -128,28 +130,6 @@ class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers
         profile_data: dict = validated_data.pop('profile', None)
 
         return register_user(validated_data, password, profile_data)
-
-
-class KnoxTokenSerializer(AuthTokenSerializer):
-    expiry = serializers.DateTimeField(read_only=True, label=_('Expiry'))
-
-
-class LoginPayloadSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField(read_only=True)
-    profile_id = serializers.PrimaryKeyRelatedField(source='profile', read_only=True)
-
-    def get_avatar(self, user: User):
-        field = serializers.ImageField()
-        field.bind('avatar', self)
-        return field.to_representation(user.profile.avatar)
-
-    class Meta:
-        model = User
-        fields = ['profile_id', 'first_name', 'last_name', 'avatar']
-        extra_kwargs = {
-            'first_name': {'read_only': True},
-            'last_name': {'read_only': True},
-        }
 
 
 class ActivationSerializer(DjoserActivationSerializer):

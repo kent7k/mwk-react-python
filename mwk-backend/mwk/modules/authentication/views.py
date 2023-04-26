@@ -10,8 +10,11 @@ from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
 
 from .permissions import IsAnonymous
-from .serializers import (ActivationSerializer, KnoxTokenSerializer,
-                          UserCreateWithProfileSerializer)
+# from .serializers import (ActivationSerializer, KnoxTokenSerializer,
+#                           UserCreateWithProfileSerializer)
+from mwk.modules.authentication.serializers.KnoxTokenSerializer import KnoxTokenSerializer
+from mwk.modules.authentication.serializers.serializers import (ActivationSerializer,
+                                                    UserCreateWithProfileSerializer)
 from .services import activate_user, create_authtoken, send_activation_email
 from .tokens import AuthenticationToken
 
