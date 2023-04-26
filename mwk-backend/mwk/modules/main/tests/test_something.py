@@ -8,10 +8,10 @@ from knox.models import AuthToken
 from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
-from .models import Comment, Post, PostCategory
-from .serializers import CommentSerializer, PostCategorySerializer, PostSerializer
-from .services import get_post_comments
-from .services import get_posts as get_posts_queryset
+from mwk.modules.main.models import Comment, Post, PostCategory
+from mwk.modules.main.serializers import CommentSerializer, PostCategorySerializer, PostSerializer
+from mwk.modules.main.services import get_post_comments
+from mwk.modules.main.services import get_posts as get_posts_queryset
 
 
 class PostsTestCase(APITestCase):
