@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 
 from mwk.modules.authentication.models import Profile
 
-from mwk.modules.profiles.serializers import ProfileSerializer
+from mwk.modules.profiles.serializers.ProfileSerializer import ProfileSerializer
 
 
 class ProfileTests(APITestCase):

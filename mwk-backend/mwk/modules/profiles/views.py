@@ -1,6 +1,6 @@
 from rest_framework.generics import RetrieveAPIView, ListAPIView
-from .serializers import ProfileSerializer
-from .services import get_profiles
+from mwk.modules.profiles.serializers.ProfileSerializer import ProfileSerializer
+from mwk.modules.profiles.services import get_profiles
 
 
 class ProfileDetailAPIView(RetrieveAPIView):
