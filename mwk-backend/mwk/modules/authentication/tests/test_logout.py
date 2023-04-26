@@ -1,19 +1,12 @@
-import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
-from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import reverse
-from djoser.utils import encode_uid
 from knox.models import AuthToken
-from rest_framework.response import Response
 from rest_framework.test import APITestCase
-
-from mwk.modules.authentication.models import Profile
-from mwk.modules.authentication.tokens import AuthenticationToken
 
 
 class AuthenticationTestCase(APITestCase):
