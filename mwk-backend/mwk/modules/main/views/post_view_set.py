@@ -40,10 +40,7 @@ class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet
             'get_categories': self.categories_serializer_class,
         }
 
-        if self.action in actions_serializers:
-            return actions_serializers.get(self.action)
-
-        return super().get_serializer_class()
+        return actions_serializers.get(self.action, super().get_serializer_class())
 
     def validate_query(self, query: dict) -> None:
         """
@@ -97,7 +94,7 @@ class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet
         pk = request.data.get('post')
 
         if not pk:
-            return Response(status=400)
+            raise ValidationError({'post': _('This field is required.')})
 
         post = get_object_or_404(Post, pk=pk)
 
