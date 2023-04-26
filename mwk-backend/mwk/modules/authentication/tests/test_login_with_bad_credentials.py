@@ -1,3 +1,4 @@
+import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
@@ -49,28 +50,19 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def login(self):
+    def authenticate(self, token: str) -> None:
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+
+    def test_login_with_bad_credentials(self):
+        """A test that tries to login with bad credentials"""
+
         url = reverse('login')
-        data = self.login_data
+        data = {
+            'username': self.username,
+            'password': 'bla123321fthaapqkd111',
+        }
         response = self.client.post(url, data)
 
-        return response
-
-    def test_two_tokens_not_compare(self):
-        """A test that the two tokens received during login will not be equal"""
-
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        first_token: str = response.data.get('token')
-
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        second_token: str = response.data.get('token')
-
-        self.assertFalse(first_token == second_token)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('non_field_errors')[0].code, 'authorization')

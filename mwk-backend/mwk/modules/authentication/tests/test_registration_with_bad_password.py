@@ -1,3 +1,4 @@
+import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
@@ -49,28 +50,24 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
+    def test_registration_with_bad_password(self):
+        """A test that tries to register with bad password"""
 
-        return response
+        url = reverse('reg')
+        data = copy.deepcopy(self.register_data)
+        data['password'] = 'asd1233'
 
-    def test_two_tokens_not_compare(self):
-        """A test that the two tokens received during login will not be equal"""
+        response = self.client.post(url, data, format='json')
 
-        response = self.login()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('password')[0].code, 'password_too_short')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
+        data = copy.deepcopy(self.register_data)
+        data['password'] = 'qwerty1234'
 
-        first_token: str = response.data.get('token')
+        response = self.client.post(url, data, format='json')
 
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        second_token: str = response.data.get('token')
-
-        self.assertFalse(first_token == second_token)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('password')[0].code, 'password_too_common')

@@ -1,3 +1,4 @@
+import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
@@ -49,28 +50,23 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
+    def test_registration_with_age_more_than_onehundred_forty(self):
+        """Test register with age more than one hundred forty"""
 
-        return response
+        url = reverse('reg')
 
-    def test_two_tokens_not_compare(self):
-        """A test that the two tokens received during login will not be equal"""
+        data = copy.deepcopy(self.register_data)
+        data['profile']['birthday'] = (
+            (datetime.today() - timedelta(days=(365 * 142))).date().strftime('%Y-%m-%d')
+        )
+        response = self.client.post(url, data, format='json')
 
-        response = self.login()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
+        profile = response.data.get('profile')
+        self.assertEqual(len(profile), 1)
 
-        first_token: str = response.data.get('token')
-
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        second_token: str = response.data.get('token')
-
-        self.assertFalse(first_token == second_token)
+        self.assertEqual(
+            profile.get('birthday')[0].code, 'age_more_than_onehundred_forty'
+        )

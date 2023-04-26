@@ -54,16 +54,6 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def authenticate(self, token: str) -> None:
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
-
-        return response
-
     def activate_user(self, token: str, uid: str) -> Response:
         """Activate the user and return response"""
 

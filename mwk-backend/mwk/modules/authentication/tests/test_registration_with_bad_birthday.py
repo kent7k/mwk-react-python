@@ -1,6 +1,8 @@
+import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
+from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -49,28 +51,31 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
+    def test_registration_with_bad_birthday(self):
+        """Test register with invalid birthday"""
 
-        return response
+        url = reverse('reg')
 
-    def test_two_tokens_not_compare(self):
-        """A test that the two tokens received during login will not be equal"""
+        data = copy.deepcopy(self.register_data)
+        data['profile']['birthday'] = 'alajhdeu'
+        response = self.client.post(url, data, format='json')
 
-        response = self.login()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
+        profile = response.data.get('profile')
+        self.assertEqual(len(profile), 1)
 
-        first_token: str = response.data.get('token')
+        self.assertEqual(profile.get('birthday')[0].code, 'invalid')
 
-        response = self.login()
+        data = copy.deepcopy(self.register_data)
+        data['profile']['birthday'] = datetime.now()
+        response = self.client.post(url, data, format='json')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
 
-        second_token: str = response.data.get('token')
+        profile = response.data.get('profile')
+        self.assertEqual(len(profile), 1)
 
-        self.assertFalse(first_token == second_token)
+        self.assertEqual(profile.get('birthday')[0].code, 'invalid')

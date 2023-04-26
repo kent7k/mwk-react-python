@@ -1,6 +1,8 @@
+import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
+from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -49,28 +51,15 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
+    def test_registration_with_existing_username(self):
+        """A test that tries to register with already existing username"""
 
-        return response
+        url = reverse('reg')
+        data = copy.deepcopy(self.register_data)
+        data['username'] = self.user.username
 
-    def test_two_tokens_not_compare(self):
-        """A test that the two tokens received during login will not be equal"""
+        response = self.client.post(url, data, format='json')
 
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        first_token: str = response.data.get('token')
-
-        response = self.login()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
-
-        second_token: str = response.data.get('token')
-
-        self.assertFalse(first_token == second_token)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data.get('username')[0].code, 'unique')

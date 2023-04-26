@@ -1,6 +1,8 @@
+import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
+from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -49,28 +51,33 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
+    def test_registration_with_bad_avatar(self):
+        """Test register with invalid avatar"""
 
-        return response
+        url = reverse('reg')
 
-    def test_two_tokens_not_compare(self):
-        """A test that the two tokens received during login will not be equal"""
+        data = copy.deepcopy(self.register_data)
+        data['profile']['avatar'] = self.fake_avatar
 
-        response = self.login()
+        response = self.client.post(url, data, format='json')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
 
-        first_token: str = response.data.get('token')
+        profile = response.data.get('profile')
+        self.assertEqual(len(profile), 1)
 
-        response = self.login()
+        self.assertEqual(profile.get('avatar')[0].code, 'invalid')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('token' in response.data)
+        data = copy.deepcopy(self.register_data)
+        data['profile']['avatar'] = 'blabla'
 
-        second_token: str = response.data.get('token')
+        response = self.client.post(url, data, format='json')
 
-        self.assertFalse(first_token == second_token)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(len(response.data), 1)
+
+        profile = response.data.get('profile')
+        self.assertEqual(len(profile), 1)
+
+        self.assertEqual(profile.get('avatar')[0].code, 'invalid')
