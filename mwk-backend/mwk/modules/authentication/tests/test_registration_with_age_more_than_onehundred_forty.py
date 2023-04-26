@@ -51,9 +51,6 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def authenticate(self, token: str) -> None:
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-
     def test_registration_with_age_more_than_onehundred_forty(self):
         """Test register with age more than one hundred forty"""
 
