@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.test import APITestCase
 
 # from .models import Profile
-from mwk.modules.profiles.models import Profile
+from mwk.modules.authentication.models import Profile
 # from .tokens import AuthenticationToken
 from mwk.modules.authentication.tokens import AuthenticationToken
 
