@@ -12,8 +12,10 @@ from .filters import PostFilter, filters
 from .helpers.viewsets import CreateRetrieveUpdateDestroyViewSet
 from .mixins import CacheTreeQuerysetMixin, IsAuthorPermissionsMixin
 from .models import Comment, Post
-from .serializers import (CommentSerializer, CommentUpdateSerializer,
-                          PostCategorySerializer, PostSerializer)
+from mwk.modules.main.serializers.CommentSerializer import CommentSerializer
+from mwk.modules.main.serializers.PostCategorySerializer import PostCategorySerializer
+from mwk.modules.main.serializers.PostSerializer import PostSerializer
+from mwk.modules.main.serializers.CommentUpdateSerializer import CommentUpdateSerializer
 from .services import (get_comment_descendants, get_comments,
                        get_post_categories, get_post_comments, get_posts)
 

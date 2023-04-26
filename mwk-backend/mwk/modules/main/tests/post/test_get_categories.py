@@ -4,7 +4,7 @@ from knox.models import AuthToken
 from rest_framework.test import APITestCase
 
 from mwk.modules.main.models import Comment, Post, PostCategory
-from mwk.modules.main.serializers import CommentSerializer, PostCategorySerializer, PostSerializer
+from mwk.modules.main.serializers.PostCategorySerializer import PostCategorySerializer
 
 
 class PostsTestCase(APITestCase):
