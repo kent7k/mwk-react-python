@@ -130,11 +130,3 @@ class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers
         profile_data: dict = validated_data.pop('profile', None)
 
         return register_user(validated_data, password, profile_data)
-
-
-class ActivationSerializer(DjoserActivationSerializer):
-    default_error_messages = {
-        'stale_token': _('The token has expired.'),
-        'invalid_token': _('Invalid or corrupted token.'),
-        'invalid_uid': _('Invalid or corrupted UID.')
-    }

@@ -13,7 +13,8 @@ from .permissions import IsAnonymous
 # from .serializers import (ActivationSerializer, KnoxTokenSerializer,
 #                           UserCreateWithProfileSerializer)
 from mwk.modules.authentication.serializers.KnoxTokenSerializer import KnoxTokenSerializer
-from mwk.modules.authentication.serializers.serializers import (ActivationSerializer,
+from mwk.modules.authentication.serializers.ActivationSerializer import ActivationSerializer
+from mwk.modules.authentication.serializers.serializers import (
                                                     UserCreateWithProfileSerializer)
 from .services import activate_user, create_authtoken, send_activation_email
 from .tokens import AuthenticationToken
