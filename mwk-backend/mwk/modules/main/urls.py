@@ -1,7 +1,7 @@
 from django.urls import path
 
-from mwk.modules.main.views.CommentViewSet import CommentViewSet
-from mwk.modules.main.views.PostViewSet import PostViewSet
+from mwk.modules.main.views.comment_view_set import CommentViewSet
+from mwk.modules.main.views.post_view_set import PostViewSet
 
 urlpatterns = [
     # Posts
