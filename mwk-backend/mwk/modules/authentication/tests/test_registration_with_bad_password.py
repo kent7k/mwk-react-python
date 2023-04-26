@@ -50,9 +50,6 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def authenticate(self, token: str) -> None:
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-
     def test_registration_with_bad_password(self):
         """A test that tries to register with bad password"""
 

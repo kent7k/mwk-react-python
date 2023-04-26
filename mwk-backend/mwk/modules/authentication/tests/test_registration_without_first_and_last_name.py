@@ -50,9 +50,6 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def authenticate(self, token: str) -> None:
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-
     def test_registration_without_first_and_last_name(self):
         """A test that tries to register without first and last names"""
 

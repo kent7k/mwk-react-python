@@ -52,30 +52,6 @@ class AuthenticationTestCase(APITestCase):
 
         self.login_data = {'username': self.user.username, 'password': self.password}
 
-    def authenticate(self, token: str) -> None:
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
-
-        return response
-
-    def logout(self):
-        url = reverse('logout')
-        data = {}
-        response = self.client.post(url, data)
-
-        return response
-
-    def logoutall(self):
-        url = reverse('logout_all')
-        data = {}
-        response = self.client.post(url, data)
-
-        return response
-
     def test_registration_with_no_avatar(self):
         """
         A test that verifies that registering without specifying an avatar will
