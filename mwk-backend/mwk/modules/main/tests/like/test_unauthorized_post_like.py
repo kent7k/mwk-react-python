@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from knox.models import AuthToken
 from rest_framework.test import APITestCase
+from rest_framework import status
 
 from mwk.modules.main.models import Comment, Post, PostCategory
 
@@ -11,7 +12,9 @@ class LikeTestCase(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            'LikeTestCaseUser', 'liketestcase@gmail.com', 'asd123321'
+            username='LikeTestCaseUser',
+            email='liketestcase@gmail.com',
+            password='asd123321'
         )
 
         self.post = Post.objects.create(
@@ -39,4 +42,4 @@ class LikeTestCase(APITestCase):
         data = {'post_id': self.post.id}
         response = self.client.put(url, data)
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

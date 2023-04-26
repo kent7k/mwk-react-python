@@ -12,7 +12,9 @@ class LikeTestCase(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            'LikeTestCaseUser', 'liketestcase@gmail.com', 'asd123321'
+            username='LikeTestCaseUser',
+            email='liketestcase@gmail.com',
+            password='asd123321'
         )
 
         self.post = Post.objects.create(
@@ -33,9 +35,8 @@ class LikeTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
     def test_without_data_comment_like(self):
-        """Test to check the comment like without data"""
+        """Test that liking a comment without data returns a 400 error."""
         url = reverse('like_comment')
-        data = {}
-        response = self.client.put(url, data)
+        response = self.client.put(url, data={})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -12,7 +12,9 @@ class LikeTestCase(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            'LikeTestCaseUser', 'liketestcase@gmail.com', 'asd123321'
+            username='CommentLikeTestCaseUser',
+            email='commentliketestcase@gmail.com',
+            password='asd123321',
         )
 
         self.post = Post.objects.create(
@@ -23,7 +25,9 @@ class LikeTestCase(APITestCase):
         )
 
         self.comment = Comment.objects.create(
-            post=self.post, author=self.user, body='Lorem ipsum dolor sit amet'
+            post=self.post,
+            author=self.user,
+            body='Lorem ipsum dolor sit amet'
         )
 
         self.token = AuthToken.objects.create(user=self.user)[-1]
@@ -33,7 +37,7 @@ class LikeTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
     def test_unauthorized_comment_like(self):
-        """A test to check unauthorized user can't likes and remove likes on a comment"""
+        """Test that an unauthorized user cannot like or unlike a comment"""
 
         self.client.credentials()
         url = reverse('like_comment')

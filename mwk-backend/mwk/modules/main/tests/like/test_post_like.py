@@ -12,7 +12,9 @@ class LikeTestCase(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            'LikeTestCaseUser', 'liketestcase@gmail.com', 'asd123321'
+            username='LikeTestCaseUser',
+            email='liketestcase@gmail.com',
+            password='asd123321'
         )
 
         self.post = Post.objects.create(

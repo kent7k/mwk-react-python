@@ -7,14 +7,15 @@ from rest_framework.test import APITestCase
 from mwk.modules.main.models import Comment, Post, PostCategory
 
 
-class LikeTestCase(APITestCase):
-    """Test-case for testing likes"""
+class CommentLikeTestCase(APITestCase):
+    """Test case for liking and unliking a comment"""
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            'LikeTestCaseUser', 'liketestcase@gmail.com', 'asd123321'
+            username='CommentLikeTestCaseUser',
+            email='commentliketestcase@gmail.com',
+            password='asd123321',
         )
-
         self.post = Post.objects.create(
             title='My Awesome Post',
             content='Lorem ipsum dolor sit amet',
@@ -36,9 +37,9 @@ class LikeTestCase(APITestCase):
         """A test to check likes and remove likes on a comment"""
         url = reverse('like_comment')
         data = {'comment': self.comment.id}
-        response = self.client.put(url, data)
 
         # add like
+        response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'action': 'add'})
         self.assertTrue(self.comment.liked.filter(id=self.user.id).exists())
