@@ -7,8 +7,8 @@ from rest_framework.views import Response
 
 from mwk.modules.main.helpers.CreateRetrieveUpdateDestroyViewSet import CreateRetrieveUpdateDestroyViewSet
 from mwk.modules.main.models import Comment
-from mwk.modules.main.serializers.CommentSerializer import CommentSerializer
-from mwk.modules.main.serializers.CommentUpdateSerializer import CommentUpdateSerializer
+from mwk.modules.main.serializers.comment import CommentSerializer
+from mwk.modules.main.serializers.comment_update import CommentUpdateSerializer
 from mwk.modules.main.services import get_comment_descendants
 from mwk.modules.main.services import get_comments
 

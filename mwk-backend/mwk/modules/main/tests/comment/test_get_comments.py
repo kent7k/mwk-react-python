@@ -5,7 +5,7 @@ from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
 from mwk.modules.main.models import Comment, Post, PostCategory
-from mwk.modules.main.serializers.CommentSerializer import CommentSerializer
+from mwk.modules.main.serializers.comment import CommentSerializer
 
 
 from mwk.modules.main.services import get_post_comments

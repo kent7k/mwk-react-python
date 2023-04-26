@@ -10,7 +10,7 @@ from mwk.modules.main.models import Comment, Image, Post, PostCategory
 
 from mwk.modules.main.services import create_comment_images, create_post_images
 
-from mwk.modules.main.serializers.ImageSerializer import ImageSerializer
+from mwk.modules.main.serializers.image import ImageSerializer
 
 
 class PostSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer):
