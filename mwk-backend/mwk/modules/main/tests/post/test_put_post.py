@@ -17,7 +17,6 @@ class PostsTestCase(APITestCase):
     def setUp(self) -> None:
         self.email = 'poststestcase@gmail.com'
         self.password = 'asd123321'
-
         self.user = User.objects.create_user('PostsTestCase', self.email, self.password)
         self.token: str = AuthToken.objects.create(self.user)[-1]
 
@@ -52,7 +51,6 @@ class PostsTestCase(APITestCase):
         return get_posts_queryset(self.user)
 
     def test_put_post(self):
-        """Test PUT request to post raises 405 HTTP error"""
 
         post = self.get_posts(3).last()
 
@@ -60,5 +58,4 @@ class PostsTestCase(APITestCase):
 
         self.authenticate(self.token)
         response = self.client.put(url)
-
         self.assertEqual(response.status_code, 405)

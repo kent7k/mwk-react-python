@@ -4,11 +4,10 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from knox.models import AuthToken
-from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
-from mwk.modules.main.models import Comment, Post, PostCategory
-from mwk.modules.main.services import get_posts as get_posts_queryset
+from mwk.modules.main.models import Post
+from mwk.modules.main.services import get_posts
 
 
 class PostsTestCase(APITestCase):
@@ -24,40 +23,24 @@ class PostsTestCase(APITestCase):
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def create_posts(self, page_size: int) -> None:
-        """Fill the Post model"""
-
-        post_objects = (
-            Post(
+    def create_posts(self, page_size):
+        posts = []
+        for i in range(page_size):
+            post = Post.objects.create(
                 profile=self.user.profile,
                 title='Post ' + str(i),
                 content='lorem ipsum',
                 author=self.user,
+                created_at=timezone.now() + timedelta(minutes=i),
             )
-            for i in range(page_size)
-        )
+            posts.append(post)
 
-        posts = Post.objects.bulk_create(post_objects)
-
-        for i, post in enumerate(posts):
-            # Because we cannot set the created_at field immediately when creating an object
-            post.created_at = timezone.now() + timedelta(minutes=i)
-            post.save()
-
-    def get_posts(self, page_size: int = api_settings.PAGE_SIZE):
-        """Create posts and return ready queryset"""
-
+    def get_posts_queryset(self, page_size):
         self.create_posts(page_size)
+        return get_posts(self.user)
 
-        return get_posts_queryset(self.user)
-
-    def test_put_posts(self):
-        """Test PUT request to posts raises 405 HTTP error"""
-
-        url = reverse('feed')
-        self.get_posts()
-
+    def test_put_post(self):
+        url = reverse('post', kwargs={'pk': self.get_posts_queryset(3).last().id})
         self.authenticate(self.token)
         response = self.client.put(url)
-
         self.assertEqual(response.status_code, 405)

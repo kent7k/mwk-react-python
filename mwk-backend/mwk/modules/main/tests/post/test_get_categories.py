@@ -21,15 +21,9 @@ class PostsTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
     def test_get_categories(self):
-        """Test getting post categories"""
-
         url = reverse('post_categories')
-        categories = PostCategory.objects.all()
-
         self.authenticate(self.token)
         response = self.client.get(url)
-
-        serializer_data = PostCategorySerializer(instance=categories, many=True).data
-
+        serializer = PostCategorySerializer(PostCategory.objects.all(), many=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, serializer_data)
+        self.assertEqual(response.data, serializer.data)

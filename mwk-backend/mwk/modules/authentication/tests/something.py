@@ -1,73 +1,138 @@
-import copy
-import os
-from base64 import b64encode
 from datetime import datetime, timedelta
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import reverse
 from knox.models import AuthToken
+from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
+from mwk.modules.authentication.models import Profile
+from mwk.modules.profiles.serializers.profile import ProfileSerializer
 
-class AuthenticationTestCase(APITestCase):
-    """Test registration and login"""
 
-    def setUp(self):
-        self.email = 'authentication-test-case-user@gmail.com'
-        self.email_register = 'authentication-test-case@gmail.com'
-        self.username = 'authentication-test'
-        self.first_name = 'John'
-        self.last_name = 'Doe'
+class ProfileTests(APITestCase):
+    """Profiles test"""
+
+    def setUp(self) -> None:
+        self.email = 'profilestestcase@gmail.com'
         self.password = 'asd123321'
-        self.media_path = os.path.join(settings.TESTS_MEDIA_ROOT, 'authentication')
-
-        with open(os.path.join(self.media_path, 'avatar.png'), 'rb') as file:
-            self.avatar = b64encode(file.read())
 
         self.user = User.objects.create_user(
-            'authentication-test-user', self.email, self.password
+            'ProfilesTestCase',
+            self.email,
+            self.password,
+            first_name='John',
+            last_name='Pauls',
         )
-        self.token = AuthToken.objects.create(user=self.user)[-1]
+        self.user.profile.delete()
 
-        self.register_data = {
-            'email': self.email_register,
-            'username': self.username,
-            'password': self.password,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'profile': {
-                'birthday': self._get_birthday(10),
-                'avatar': self.avatar,
-            },
-        }
+        self.birthday = datetime.today() - timedelta(days=365 * 15)
 
-        self.login_data = {'username': self.user.username, 'password': self.password}
+        self.token = AuthToken.objects.create(self.user)[-1]
 
-    def _get_birthday(self, years):
-        """Return a birthday 'years' years ago from today"""
-        return (datetime.today() - timedelta(days=(365 * years))).date().strftime('%Y-%m-%d')
+    def authenticate(self, token: str) -> None:
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def test_registration_with_age_less_than_fourteen(self):
-        """Test registration with age less than fourteen"""
+    def create_profiles(self, page_size=None) -> list[Profile]:
+        """Create and return list of profiles"""
 
-        url = reverse('reg')
+        page_size = page_size or api_settings.PAGE_SIZE
 
-        data = copy.deepcopy(self.register_data)
-        data['profile']['birthday'] = self._get_birthday(10)
+        users = map(
+            lambda i: User.objects.create_user(
+                username=f"ProfilesTestCaseGetProfiles{i}",
+                email=f"profilestestcasegetprofiles{i}@gmail.com",
+                password=self.password,
+                first_name=f"Test{i}",
+            ),
+            range(page_size)
+        )
 
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, 400)
+        profiles = Profile.objects.bulk_create(
+            [Profile(user=user, birthday=self.birthday) for user in users]
+        )
 
-        # Check that the error message is correct
-        expected_error = {
-            'profile': {
-                'birthday': [
-                    {
-                        'code': 'age_less_than_fourteen',
-                        'message': 'You must be at least 14 years old to register'
-                    }
-                ]
-            }
-        }
-        self.assertEqual(response.data, expected_error)
+        return profiles
+
+    def test_get_profiles(self)from datetime import datetime, timedelta
+
+from django.contrib.auth.models import User
+from django.urls import reverse
+from knox.models import AuthToken
+from rest_framework import status
+from rest_framework.settings import api_settings
+from rest_framework.test import APITestCase
+
+from mwk.modules.authentication.models import Profile
+from mwk.modules.profiles.serializers.profile import ProfileSerializer
+
+
+class ProfileTests(APITestCase):
+    """Profiles test"""
+
+    def setUp(self) -> None:
+        self.email = 'profilestestcase@gmail.com'
+        self.password = 'asd123321'
+        self.user = User.objects.create_user(
+            'ProfilesTestCase',
+            self.email,
+            self.password,
+            first_name='John',
+            last_name='Pauls',
+        )
+        self.token: str = AuthToken.objects.create(self.user)[-1]
+        self.birthday = (
+            (datetime.today() - timedelta(days=(365 * 15))).date().strftime('%Y-%m-%d')
+        )
+        self.setup_user_profile(self.user)
+
+    def authenticate(self, token: str) -> None:
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+
+    def setup_user_profile(self, user: User) -> Profile:
+        """Fill in the profile with test data"""
+        return Profile.objects.create(user=user, birthday=self.birthday)
+
+    def create_profiles(self) -> list[Profile]:
+        page_size = api_settings.PAGE_SIZE
+        profiles = [
+            self.setup_user_profile(
+                User.objects.create_user(
+                    'ProfilesTestCaseGetProfiles' + str(i),
+                    'profilestestcasegetprofiles@gmail.com',
+                    self.password,
+                    first_name='Test' + str(i),
+                )
+            )
+            for i in range(page_size)
+        ]
+        return profiles
+
+    def test_get_profiles(self):
+        url = reverse('profiles')
+        self.authenticate(self.token)
+        profiles = self.create_profiles()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = ProfileSerializer(instance=profiles, many=True)
+        self.assertEqual(response.data.get('results'), serializer.data)
+
+    def test_get_me(self):
+        """Test getting self profile"""
+        url = reverse('profile_details')
+        self.authenticate(self.token)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_OK)
+        serializer = Profile
+:
+        url = reverse('profiles')
+        self.authenticate(self.token)
+
+        self.create_profiles()
+        profiles = Profile.objects.all()
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        serializer = ProfileSerializer(instance=profiles, many=True)
+        self.assertEqual(response.data.get('results'), serializer.data)
