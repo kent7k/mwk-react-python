@@ -53,11 +53,8 @@ class AuthenticationTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
     def test_register_authorized(self):
-        """A test to verify that an authorized user will receive a 403 error when trying to register"""
-
+        """Test that an authorized user receives a 403 error when trying to register"""
         url = reverse('reg')
-        data = self.register_data
         self.authenticate(self.token)
-        response = self.client.post(url, data, format='json')
-
+        response = self.client.post(url, self.register_data, format='json')
         self.assertEqual(response.status_code, 403)

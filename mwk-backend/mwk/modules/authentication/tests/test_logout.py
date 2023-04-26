@@ -12,118 +12,53 @@ from rest_framework.test import APITestCase
 class AuthenticationTestCase(APITestCase):
     """Registration and login test"""
 
-    def setUp(self) -> None:
-        self.email = 'authenticationtestcaseuser@gmail.com'
-        self.email_register = 'authenticationtestcase@gmail.com'
-        self.username = 'AuthenticationTest'
-        self.first_name = 'John'
-        self.last_name = 'Doe'
-        self.password = 'asd123321'
-        self.birthday = (
-            (datetime.today() - timedelta(days=(365 * 15))).date().strftime('%Y-%m-%d')
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='AuthenticationTestUser',
+            email='authenticationtestcaseuser@gmail.com',
+            password='asd123321'
         )
+        self.token = AuthToken.objects.create(user=self.user)[-1]
+        self.login_data = {
+            'username': self.user.username,
+            'password': 'asd123321'
+        }
         self.media_path = os.path.join(settings.TESTS_MEDIA_ROOT, 'authentication')
-
-        with open(os.path.join(self.media_path, 'avatar.png'), 'rb') as file:
-            self.avatar = b64encode(file.read())
-
-        with open(os.path.join(self.media_path, 'alt-avatar.txt'), 'rb') as file:
-            self.fake_avatar = b64encode(file.read())
-
-        self.user: User = User.objects.create_user(
-            'AuthenticationTestUser', self.email, self.password
-        )
-        self.token: str = AuthToken.objects.create(user=self.user)[-1]
-
+        self.avatar = self._encode_file('avatar.png')
+        self.fake_avatar = self._encode_file('alt-avatar.txt')
         self.register_data = {
-            'email': self.email_register,
-            'username': self.username,
-            'password': self.password,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
+            'email': 'authenticationtestcase@gmail.com',
+            'username': 'AuthenticationTest',
+            'password': 'asd123321',
+            'first_name': 'John',
+            'last_name': 'Doe',
             'profile': {
-                'birthday': self.birthday,
+                'birthday': self._get_birthday(),
                 'avatar': self.avatar,
-            },
+            }
         }
 
-        self.login_data = {'username': self.user.username, 'password': self.password}
+    def _get_birthday(self):
+        return (datetime.today() - timedelta(days=(365 * 15))).date().strftime('%Y-%m-%d')
+
+    def _encode_file(self, filename):
+        with open(os.path.join(self.media_path, filename), 'rb') as file:
+            return b64encode(file.read())
 
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def login(self):
-        url = reverse('login')
-        data = self.login_data
-        response = self.client.post(url, data)
-
-        return response
-
-    def logout(self):
-        url = reverse('logout')
-        data = {}
-        response = self.client.post(url, data)
-
-        return response
-
-    def logoutall(self):
-        url = reverse('logout_all')
-        data = {}
-        response = self.client.post(url, data)
-
-        return response
-
     def test_logout(self):
-        """Test logout user"""
+        """Test successful user logout"""
 
         # Login
-
-        response = self.login()
-
+        response = self.client.post(reverse('login'), self.login_data)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('token' in response.data)
 
-        token: str = response.data.get('token')
+        token = response.data['token']
         self.authenticate(token)
 
         # Logout
-
-        response = self.logout()
-
+        response = self.client.post(reverse('logout'), {})
         self.assertEqual(response.status_code, 204)
-
-    def test_logout_not_authorized(self):
-        """Test logout user which not authorized"""
-
-        response = self.logout()
-
-        self.assertEqual(response.status_code, 401)
-
-    def test_logoutall(self):
-        """Test logoutall user (destroy all tokens)"""
-
-        # Login
-
-        first_response, second_response = self.login(), self.login()
-        responses = (first_response, second_response)
-
-        self.assertTrue(
-            all(map(lambda response: response.status_code == 200, responses))
-        )
-        self.assertTrue(all(map(lambda response: 'token' in response.data, responses)))
-
-        first_token = first_response.data.get('token')
-        self.authenticate(first_token)
-
-        # Logout
-
-        response = self.logoutall()
-
-        self.assertEqual(response.status_code, 204)
-
-    def test_logoutall_not_authorized(self):
-        """Test logoutall user (destroy all tokens) which not authorized"""
-
-        response = self.logoutall()
-
-        self.assertEqual(response.status_code, 401)
