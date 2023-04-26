@@ -37,7 +37,6 @@ class AuthenticationTestCase(APITestCase):
         with open(os.path.join(self.media_path, 'alt-avatar.txt'), 'rb') as file:
             self.fake_avatar = b64encode(file.read())
 
-
         self.user: User = User.objects.create_user(
             'AuthenticationTestUser', self.email, self.password
         )
