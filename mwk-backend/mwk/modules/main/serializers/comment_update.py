@@ -6,7 +6,7 @@ from mwk.modules.main.models import Comment, Image, Post, PostCategory
 
 from mwk.modules.main.services import create_comment_images, create_post_images
 
-from mwk.modules.main.serializers.CommentSerializer import CommentSerializer
+from mwk.modules.main.serializers.comment import CommentSerializer
 
 
 class CommentUpdateSerializer(CommentSerializer):
