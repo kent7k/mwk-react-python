@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from mwk.modules.authentication.models import Profile
-from mwk.modules.profiles.serializers.UserSerializer import UserSerializer
+from mwk.modules.profiles.serializers.user import UserSerializer
 
 
 class FollowersSerializer(serializers.ModelSerializer):
