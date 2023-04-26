@@ -10,7 +10,7 @@ from mwk.modules.main.models import Comment, Post, PostCategory
 class CommentLikeTestCase(APITestCase):
     """Test case for liking and unliking a comment"""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.user = User.objects.create_user(
             username='CommentLikeTestCaseUser',
             email='commentliketestcase@gmail.com',
@@ -22,19 +22,19 @@ class CommentLikeTestCase(APITestCase):
             author=self.user,
             profile=self.user.profile,
         )
+
         self.comment = Comment.objects.create(
-            post=self.post,
-            author=self.user,
-            body='Lorem ipsum dolor sit amet',
+            post=self.post, author=self.user, body='Lorem ipsum dolor sit amet'
         )
-        self.token = AuthToken.objects.create(user=self.user).token
+
+        self.token = AuthToken.objects.create(user=self.user)[-1]
         self.authenticate()
 
     def authenticate(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.token}')
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
     def test_comment_like(self):
-        """Test that liking and unliking a comment works"""
+        """A test to check likes and remove likes on a comment"""
         url = reverse('like_comment')
         data = {'comment': self.comment.id}
 

@@ -12,9 +12,9 @@ class LikeTestCase(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            username='CommentLikeTestCaseUser',
-            email='commentliketestcase@gmail.com',
-            password='asd123321',
+            username='LikeTestCaseUser',
+            email='liketestcase@gmail.com',
+            password='asd123321'
         )
 
         self.post = Post.objects.create(
@@ -25,9 +25,7 @@ class LikeTestCase(APITestCase):
         )
 
         self.comment = Comment.objects.create(
-            post=self.post,
-            author=self.user,
-            body='Lorem ipsum dolor sit amet'
+            post=self.post, author=self.user, body='Lorem ipsum dolor sit amet'
         )
 
         self.token = AuthToken.objects.create(user=self.user)[-1]
@@ -36,12 +34,10 @@ class LikeTestCase(APITestCase):
     def authenticate(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
-    def test_unauthorized_comment_like(self):
-        """Test that an unauthorized user cannot like or unlike a comment"""
+    def test_get_comment_like(self):
+        """Test to check GET request on the comment like return HTTP 405"""
 
-        self.client.credentials()
         url = reverse('like_comment')
-        data = {'comment_id': self.comment.id}
-        response = self.client.put(url, data)
+        response = self.client.get(url)
 
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

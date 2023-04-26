@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.urls import reverse
+from rest_framework import status
 from knox.models import AuthToken
 from rest_framework.test import APITestCase
 
@@ -44,4 +45,4 @@ class AuthenticationTestCase(APITestCase):
         """Verify that a GET request to register returns a 405 error"""
         url = reverse('reg')
         response = self.client.get(url, data=self.register_data)
-        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -12,9 +12,7 @@ class LikeTestCase(APITestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
-            username='CommentLikeTestCaseUser',
-            email='commentliketestcase@gmail.com',
-            password='asd123321',
+            'LikeTestCaseUser', 'liketestcase@gmail.com', 'asd123321'
         )
 
         self.post = Post.objects.create(
@@ -25,9 +23,7 @@ class LikeTestCase(APITestCase):
         )
 
         self.comment = Comment.objects.create(
-            post=self.post,
-            author=self.user,
-            body='Lorem ipsum dolor sit amet'
+            post=self.post, author=self.user, body='Lorem ipsum dolor sit amet'
         )
 
         self.token = AuthToken.objects.create(user=self.user)[-1]
@@ -36,12 +32,9 @@ class LikeTestCase(APITestCase):
     def authenticate(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
-    def test_unauthorized_comment_like(self):
-        """Test that an unauthorized user cannot like or unlike a comment"""
+    def test_without_data_post_like(self):
+        """Test that posting a like without data returns a 400 error."""
+        url = reverse('like')
+        response = self.client.put(url, {})
 
-        self.client.credentials()
-        url = reverse('like_comment')
-        data = {'comment_id': self.comment.id}
-        response = self.client.put(url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

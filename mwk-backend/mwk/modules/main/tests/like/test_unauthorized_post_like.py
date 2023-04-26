@@ -1,67 +1,45 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from knox.models import AuthToken
-from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
+from rest_framework import status
 
 from mwk.modules.main.models import Comment, Post, PostCategory
-from mwk.modules.main.serializers.comment import CommentSerializer
-from mwk.modules.main.services import get_post_comments
 
 
-class CommentsTestCase(APITestCase):
-    """Comments test"""
+class LikeTestCase(APITestCase):
+    """Test-case for testing likes"""
 
     def setUp(self) -> None:
-        self.email = 'commentstestcase@gmail.com'
-        self.password = 'asd123321'
-
         self.user = User.objects.create_user(
-            'CommentsTestCase', self.email, self.password
+            username='LikeTestCaseUser',
+            email='liketestcase@gmail.com',
+            password='asd123321'
         )
-        self.token: str = AuthToken.objects.create(self.user)[-1]
 
-        self.post = Post(
-            profile=self.user.profile,
-            title='Post 1',
-            content='lorem ipsum',
+        self.post = Post.objects.create(
+            title='My Awesome Post',
+            content='Lorem ipsum dolor sit amet',
             author=self.user,
+            profile=self.user.profile,
         )
 
-        self.post.save()
-
-    def authenticate(self, token: str) -> None:
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-
-    def create_comments(self, page_size: int) -> None:
-        """Fill the Comments model"""
-
-        comment_objects = (
-            Comment(
-                post=self.post,
-                author=self.user,
-                body='lorem ipsum',
-                lft=0,
-                rght=0,
-                tree_id=0,
-                level=0,
-            )
-            for _ in range(page_size)
+        self.comment = Comment.objects.create(
+            post=self.post, author=self.user, body='Lorem ipsum dolor sit amet'
         )
 
-        return Comment.objects.bulk_create(comment_objects)
+        self.token = AuthToken.objects.create(user=self.user)[-1]
+        self.authenticate()
 
-    def get_comments(self, page_size: int = api_settings.PAGE_SIZE):
-        self.create_comments(page_size)
-        return get_post_comments(self.user, self.post.id)
+    def authenticate(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
-    def test_get_comments(self):
-        url = reverse('post_comments', kwargs={'pk': self.post.id})
-        comments = self.get_comments()
-        self.authenticate(self.token)
-        response = self.client.get(url)
-        serializer = CommentSerializer(
-            comments, many=True, context={'request': response.wsgi_request}
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.get('results'), serializer.data)
+    def test_unauthorized_post_like(self):
+        """A test to check unauthorized user can't likes and remove likes on a post"""
+
+        self.client.credentials()
+        url = reverse('like')
+        data = {'post_id': self.post.id}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

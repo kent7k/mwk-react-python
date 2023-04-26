@@ -8,7 +8,7 @@ from mwk.modules.main.models import Comment, Post, PostCategory
 
 
 class LikeTestCase(APITestCase):
-    """Test-case for testing likes"""
+    """Test case for liking and unliking a comment"""
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(
@@ -23,25 +23,32 @@ class LikeTestCase(APITestCase):
             author=self.user,
             profile=self.user.profile,
         )
-
         self.comment = Comment.objects.create(
             post=self.post,
             author=self.user,
-            body='Lorem ipsum dolor sit amet'
+            body='Lorem ipsum dolor sit amet',
         )
-
         self.token = AuthToken.objects.create(user=self.user)[-1]
         self.authenticate()
 
     def authenticate(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 
-    def test_unauthorized_comment_like(self):
-        """Test that an unauthorized user cannot like or unlike a comment"""
+    def test_bad_data_comment_like(self):
+        """Test that like comment endpoint returns errors for bad data"""
 
-        self.client.credentials()
         url = reverse('like_comment')
+        data = {'comment': 245}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
         data = {'comment_id': self.comment.id}
         response = self.client.put(url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = {'comment': []}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
