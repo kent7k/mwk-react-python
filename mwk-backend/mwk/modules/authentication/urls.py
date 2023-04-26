@@ -1,6 +1,6 @@
 from django.urls import path
 
-from mwk.modules.authentication.views.check_token_view import CheckTokenAPIView
+from mwk.modules.authentication.views.check_token_view import TokenCheckAPIView
 from mwk.modules.authentication.views.user_activate_view import UserActivateAPIView
 from mwk.modules.authentication.views.user_login_view import UserLoginAPIView
 from mwk.modules.authentication.views.user_logout_all_view import UserLogoutAllAPIView
@@ -14,5 +14,5 @@ urlpatterns = [
     path('login/', UserLoginAPIView.as_view(), name='login'),
     path('logout/', UserLogoutAPIView.as_view(), name='logout'),
     path('logoutall/', UserLogoutAllAPIView.as_view(), name='logout_all'),
-    path('check-token/', CheckTokenAPIView.as_view(), name='check_token'),
+    path('check-token/', TokenCheckAPIView.as_view(), name='check_token'),
 ]

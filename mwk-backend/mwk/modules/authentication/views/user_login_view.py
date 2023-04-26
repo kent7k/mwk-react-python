@@ -1,11 +1,12 @@
 from typing import Type
 
 from django.contrib.auth.models import User
-from drf_spectacular.utils import extend_schema
 from knox.models import AuthToken
 from knox.views import LoginView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
+
+from drf_spectacular.utils import extend_schema
 
 from mwk.modules.authentication.permissions import IsAnonymous
 from mwk.modules.authentication.serializers.knox_token import KnoxTokenSerializer
@@ -29,7 +30,7 @@ class UserLoginAPIView(LoginView):
         return data
 
     @extend_schema(request=KnoxTokenSerializer, responses=KnoxTokenSerializer)
-    def post(self, request, format=None) -> Response:
+    def post(self, request) -> Response:
         serializer = KnoxTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

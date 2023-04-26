@@ -15,4 +15,5 @@ class UserRegisterAPIView(generics.CreateAPIView):
     permission_classes = (IsAnonymous,)
 
     def perform_create(self, serializer: Type[Serializer]) -> None:
-        send_activation_email(self.request, serializer.save())
+        user = serializer.save()
+        send_activation_email(self.request, user)

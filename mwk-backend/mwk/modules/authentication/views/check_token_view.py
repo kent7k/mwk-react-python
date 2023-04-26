@@ -1,19 +1,27 @@
-from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
 
 
-class CheckTokenAPIView(APIView):
+class TokenCheckAPIView(APIView):
     """
-    View to check is authentication token valid
+    View to check if authentication token is valid.
 
-    Requires token authentication.
+    This view requires token authentication. If the token is valid,
+    a 204 response is returned. Otherwise, an appropriate error response
+    will be returned.
     """
 
     @extend_schema(request=None, responses=None)
     def get(self, request, format=None):
         """
-        Return 204 response if token is valid.
+        Check the validity of the authentication token.
+
+        Returns:
+            Response: A 204 response if the token is valid.
         """
+
+        # TODO: Implement token validation logic here.
+        # If validation fails, raise AuthenticationFailed.
 
         return Response(status=204)
