@@ -190,7 +190,7 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_KNOX = {
     'TOKEN_TTL': timedelta(hours=48),
     'AUTO_REFRESH': True,
-    'USER_SERIALIZER': 'mwk.modules.authentication.serializers.LoginPayloadSerializer',
+    'USER_SERIALIZER': 'mwk.modules.authentication.serializers.LoginPayloadSerializer.LoginPayloadSerializer',
 }
 
 # Debug toolbar
