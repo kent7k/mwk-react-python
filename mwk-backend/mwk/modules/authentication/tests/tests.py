@@ -12,8 +12,10 @@ from knox.models import AuthToken
 from rest_framework.response import Response
 from rest_framework.test import APITestCase
 
-from .models import Profile
-from .tokens import AuthenticationToken
+# from .models import Profile
+from mwk.modules.profiles.models import Profile
+# from .tokens import AuthenticationToken
+from mwk.modules.authentication.tokens import AuthenticationToken
 
 
 class AuthenticationTestCase(APITestCase):
