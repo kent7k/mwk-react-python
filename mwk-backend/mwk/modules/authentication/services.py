@@ -1,6 +1,3 @@
-"""Services for the authentication app"""
-
-
 from datetime import datetime
 from smtplib import SMTPException
 

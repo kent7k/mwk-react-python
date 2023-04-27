@@ -13,6 +13,7 @@ from mwk.modules.authentication.models.custom_auth_token import CustomAuthToken
 from mwk.modules.authentication.models.profile import Profile
 
 
+@admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = [
         'id',
@@ -63,6 +64,7 @@ class ProfileAdmin(admin.ModelAdmin):
     get_years_old.short_description = 'Full years'
 
 
+@admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = [
         'id',
@@ -97,9 +99,9 @@ class ContactAdmin(admin.ModelAdmin):
         return qs.prefetch_related('user_from__user', 'user_to__user')
 
 
+@admin.register(AuthToken)
 class TokenAdmin(AuthTokenAdmin):
     """CustomAuthToken admin"""
-
     pass
 
 

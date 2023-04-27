@@ -13,6 +13,7 @@ from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 
 
+@admin.register(PostCategory)
 class PostCategoryAdmin(admin.ModelAdmin):
     """PostCategory model admin"""
 
@@ -21,6 +22,7 @@ class PostCategoryAdmin(admin.ModelAdmin):
     search_fields = ['id', 'title']
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Post model admin"""
 
@@ -91,6 +93,7 @@ class PostAdmin(admin.ModelAdmin):
         )
 
 
+@admin.register(Comment)
 class CommentAdmin(MPTTModelAdmin):
     """Comment model mptt-admin"""
 
@@ -169,6 +172,7 @@ class CommentAdmin(MPTTModelAdmin):
             messages.error(request, err.message)
 
 
+@admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     """Image model admin"""
 
