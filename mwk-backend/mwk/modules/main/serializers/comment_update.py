@@ -2,7 +2,11 @@ from typing import Iterable
 
 from rest_framework import serializers
 
-from mwk.modules.main.models import Comment, Image, Post, PostCategory
+from mwk.modules.main.models.comment import Comment
+from mwk.modules.main.models.image import Image
+from mwk.modules.main.models.post_category import PostCategory
+from mwk.modules.main.models.post import Post
+
 
 from mwk.modules.main.services import create_comment_images, create_post_images
 

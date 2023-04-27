@@ -8,7 +8,7 @@ from rest_framework import serializers
 from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
 
 from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
-from mwk.modules.authentication.models import Profile
+from mwk.modules.authentication.models.profile import Profile
 
 
 class ProfileCreateSerializer(

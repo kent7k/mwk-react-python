@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mwk.modules.authentication.models import Profile
+from mwk.modules.authentication.models.profile import Profile
 from mwk.modules.profiles.serializers.user import UserSerializer
 
 

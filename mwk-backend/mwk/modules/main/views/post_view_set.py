@@ -8,7 +8,10 @@ from rest_framework.serializers import Serializer
 from rest_framework.views import Response
 from rest_framework.viewsets import ModelViewSet
 
-from mwk.modules.main.models import Comment, Post
+from mwk.modules.main.models.comment import Comment
+from mwk.modules.main.models.image import Image
+from mwk.modules.main.models.post_category import PostCategory
+from mwk.modules.main.models.post import Post
 from mwk.modules.main.filters import PostFilter, filters
 from mwk.modules.main.mixins import CacheTreeQuerysetMixin
 from mwk.modules.main.serializers.comment import CommentSerializer

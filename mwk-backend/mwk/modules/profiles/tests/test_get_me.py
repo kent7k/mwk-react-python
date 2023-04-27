@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
-from mwk.modules.authentication.models import Profile
+from mwk.modules.authentication.models.profile import Profile
 from mwk.modules.profiles.serializers.profile import ProfileSerializer
 
 

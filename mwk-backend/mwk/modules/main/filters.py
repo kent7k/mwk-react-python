@@ -4,7 +4,7 @@ from django.db.models import Count, Exists, OuterRef
 from django.forms import CheckboxInput, Select
 from django_filters import rest_framework as filters
 
-from .models import Post
+from mwk.modules.main.models.post import Post
 
 
 class PostFilter(filters.FilterSet):
