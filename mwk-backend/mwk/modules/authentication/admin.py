@@ -8,7 +8,9 @@ from django.utils.safestring import SafeString, mark_safe
 from knox.admin import AuthTokenAdmin
 from knox.models import AuthToken
 
-from .models import Contact, CustomAuthToken, Profile
+from mwk.modules.authentication.models.contact import Contact
+from mwk.modules.authentication.models.custom_auth_token import CustomAuthToken
+from mwk.modules.authentication.models.profile import Profile
 
 
 class ProfileAdmin(admin.ModelAdmin):

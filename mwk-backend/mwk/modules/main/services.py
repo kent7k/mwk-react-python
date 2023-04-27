@@ -6,7 +6,10 @@ from typing import Collection, TypeVar
 from django.contrib.auth.models import User
 from django.db.models import Count, Exists, OuterRef
 
-from .models import Comment, Image, Post, PostCategory
+from mwk.modules.main.models.comment import Comment
+from mwk.modules.main.models.image import Image
+from mwk.modules.main.models.post_category import PostCategory
+from mwk.modules.main.models.post import Post
 
 T = TypeVar('T')
 

@@ -1,4 +1,4 @@
-from mwk.modules.authentication.models import Profile
+from mwk.modules.authentication.models.profile import Profile
 
 
 def get_profiles():

@@ -6,7 +6,10 @@ from rest_framework.serializers import Serializer
 from rest_framework.views import Response
 
 from mwk.modules.main.helpers.create_retrieve_update_destroy_viewset import CreateRetrieveUpdateDestroyViewSet
-from mwk.modules.main.models import Comment
+from mwk.modules.main.models.comment import Comment
+from mwk.modules.main.models.image import Image
+from mwk.modules.main.models.post_category import PostCategory
+from mwk.modules.main.models.post import Post
 from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.comment_update import CommentUpdateSerializer
 from mwk.modules.main.services import get_comment_descendants

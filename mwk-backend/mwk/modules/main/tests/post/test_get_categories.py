@@ -3,7 +3,10 @@ from django.urls import reverse
 from knox.models import AuthToken
 from rest_framework.test import APITestCase
 
-from mwk.modules.main.models import Comment, Post, PostCategory
+from mwk.modules.main.models.comment import Comment
+from mwk.modules.main.models.image import Image
+from mwk.modules.main.models.post_category import PostCategory
+from mwk.modules.main.models.post import Post
 from mwk.modules.main.serializers.post_category import PostCategorySerializer
 
 

@@ -12,10 +12,9 @@ from djoser.compat import get_user_email
 from knox.models import AuthToken
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.serializers import SerializerMetaclass
 
 from .email import ActivationEmail
-from .models import Profile
+from mwk.modules.authentication.models.profile import Profile
 
 
 def send_activation_email(request, user: User) -> None:

@@ -9,7 +9,7 @@ from django.urls import reverse
 from knox.models import AuthToken
 from rest_framework.test import APITestCase
 
-from mwk.modules.authentication.models import Profile
+from mwk.modules.authentication.models.profile import Profile
 
 
 class AuthenticationTestCase(APITestCase):

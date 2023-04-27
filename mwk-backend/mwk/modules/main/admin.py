@@ -7,7 +7,10 @@ from django.utils.translation import gettext as _
 from mptt.admin import MPTTModelAdmin
 
 from .admin_types import AdminModelForm
-from .models import Comment, Image, Post, PostCategory
+from mwk.modules.main.models.comment import Comment
+from mwk.modules.main.models.image import Image
+from mwk.modules.main.models.post_category import PostCategory
+from mwk.modules.main.models.post import Post
 
 
 class PostCategoryAdmin(admin.ModelAdmin):
