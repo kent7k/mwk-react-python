@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
-from mwk.modules.authentication.permissions import IsAnonymous
+from mwk.modules.authentication.permissions import Authenticated
 from mwk.modules.authentication.serializers.activation import ActivationSerializer
 from mwk.modules.authentication.services import activate_user, create_authtoken, send_activation_email
 from mwk.modules.authentication.tokens import AuthenticationToken
@@ -16,7 +16,7 @@ class UserActivateAPIView(generics.GenericAPIView):
 
     serializer_class = ActivationSerializer
     token_generator = AuthenticationToken()  # used in ActivationSerializer
-    permission_classes = (IsAnonymous,)
+    permission_classes = (Authenticated,)
 
     def get(self, request, uid: str, token: str) -> Response:
         serializer: Type[Serializer] = self.get_serializer(

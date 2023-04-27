@@ -8,7 +8,7 @@ from rest_framework.serializers import Serializer
 
 from drf_spectacular.utils import extend_schema
 
-from mwk.modules.authentication.permissions import IsAnonymous
+from mwk.modules.authentication.permissions import Authenticated
 from mwk.modules.authentication.serializers.knox_token import KnoxTokenSerializer
 from mwk.modules.authentication.services import activate_user, create_authtoken, send_activation_email
 
@@ -16,7 +16,7 @@ from mwk.modules.authentication.services import activate_user, create_authtoken,
 class UserLoginAPIView(LoginView):
     """Endpoint for user log-in (make token)"""
 
-    permission_classes = (IsAnonymous,)
+    permission_classes = (Authenticated,)
 
     def get_post_response_data(
         self, request, token: str, instance: AuthToken, user: User
