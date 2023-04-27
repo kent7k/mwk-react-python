@@ -41,7 +41,7 @@ class ProfileAdmin(admin.ModelAdmin):
     def get_avatar(self, obj: Profile) -> Union[SafeString, str]:
         if obj.avatar:
             return mark_safe(f'<img src="{obj.avatar.url}" height="40" width="40">')
-            
+
         else:
             return '-'
 
@@ -99,21 +99,9 @@ class ContactAdmin(admin.ModelAdmin):
         return qs.prefetch_related('user_from__user', 'user_to__user')
 
 
-@admin.register(AuthToken)
+@admin.register(CustomAuthToken)
 class TokenAdmin(AuthTokenAdmin):
-    """CustomAuthToken admin"""
     pass
 
 
-to_register = [
-    (Profile, ProfileAdmin),
-    (Contact, ContactAdmin),
-    (CustomAuthToken, TokenAdmin),
-]
-to_unregister = [AuthToken]
-
-for model in to_unregister:
-    admin.site.unregister(model)
-
-for model, model_admin in to_register:
-    admin.site.register(model, model_admin)
+admin.site.unregister(AuthToken)

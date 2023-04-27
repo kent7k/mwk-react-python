@@ -212,14 +212,3 @@ class ImageAdmin(admin.ModelAdmin):
         except ValidationError as err:
             messages.set_level(request, messages.ERROR)  # prevent success message
             messages.error(request, err.message)
-
-
-to_register = [
-    (Post, PostAdmin),
-    (Image, ImageAdmin),
-    (Comment, CommentAdmin),
-    (PostCategory, PostCategoryAdmin),
-]
-
-for model, model_admin in to_register:
-    admin.site.register(model, model_admin)
