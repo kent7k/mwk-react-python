@@ -6,10 +6,9 @@ from knox.models import AuthToken
 from rest_framework.exceptions import PermissionDenied
 
 
-def create_auth_token(request, user: User, token_limit_per_user: int = None, token_ttl: int = None):
+def generate_token(request, user: User, token_limit_per_user: int = None, token_ttl: int = None):
     if token_limit_per_user is not None:
-        now = timezone.now()
-        token = user.auth_token_set.filter(expiry__gt=now)
+        token = user.auth_token_set.filter(expiry__gt=timezone.now())
         if token.count() >= token_limit_per_user:
             raise PermissionDenied(_('The maximum number of tokens per user has been reached.'))
 

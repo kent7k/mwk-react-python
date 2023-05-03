@@ -49,8 +49,6 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
 
     @action(detail=False, methods=['put'])
     def like_comment(self, request) -> Response:
-        """Like a comment"""
-
         pk = request.data.get('comment')
 
         if not pk:
