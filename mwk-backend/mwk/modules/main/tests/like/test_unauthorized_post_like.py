@@ -5,8 +5,6 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 
 from mwk.modules.main.models.comment import Comment
-from mwk.modules.main.models.image import Image
-from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 
 

@@ -6,9 +6,6 @@ from django.utils import timezone
 from knox.models import AuthToken
 from rest_framework.test import APITestCase
 
-from mwk.modules.main.models.comment import Comment
-from mwk.modules.main.models.image import Image
-from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.services.get_posts import get_posts
 
