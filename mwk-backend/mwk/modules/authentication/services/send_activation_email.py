@@ -1,51 +1,30 @@
-from smtplib import SMTPException
-
+from django.core.mail import send_mail
 from django.conf import settings
-from djoser.utils import encode_uid
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
-from djoser.compat import get_user_email
+from djoser.utils import encode_uid
 from rest_framework.exceptions import ValidationError
-from templated_mail.mail import BaseEmailMessage
 
 from mwk.modules.authentication.tokens import AuthenticationToken
 
 
-class ActivationEmail(BaseEmailMessage):
-    template_name = 'authentication/activation.html'
-
-    def get_context_data(self):
-        context = super().get_context_data()
-
-        user: User = context.get('user')
-        uid = encode_uid(user.id)
-        token = AuthenticationToken().make_token(user)
-
-        url = f"{settings.USER_ACTIVATION_URL.format(uid, token)}"
-
-        context['url'] = url
-        context['sitename'] = settings.AUTHENTICATION_SITENAME
-        return context
-
-
 def send_activation_email(request, user: User) -> None:
-    """
-    Sends an email to activate the account to the user's email
-    if the email could not be sent, deletes the user and causes error 500
-    """
+    uid = encode_uid(user.id)
+    token = AuthenticationToken().make_token(user)
 
-    context = {'user': user}
-    to = [get_user_email(user)]
+    url = f"{settings.USER_ACTIVATION_URL.format(uid, token)}"
+    subject = _("Activate your account")
+    message = _(f"Activate your account by clicking on this link: {url}")
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user.email]
 
     try:
-        ActivationEmail(request, context).send(to)
-    except SMTPException:
+        send_mail(subject, message, from_email, recipient_list)
+    except Exception:
         user.delete()
         raise ValidationError(
             detail={
-                'email': _(
-                    'Failed to send activation email, please try again!'
-                )
+                'email': _('Failed to send activation email, please try again!')
             },
             code=500,
         )
