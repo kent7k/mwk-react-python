@@ -53,7 +53,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_without_profile(self):
         """A test that tries to register without first and last names"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data.pop('profile')
 

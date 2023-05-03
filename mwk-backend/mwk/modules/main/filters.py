@@ -40,26 +40,22 @@ class PostFilter(filters.FilterSet):
 
     def filter_interesting(self, queryset: T, name: str, value: bool) -> T:
         """Filter QuerySet by user.profile.following posts."""
-        if value:
-            following = self.request.user.profile.following
-            queryset = (
-                queryset.annotate(
-                    is_interesting=Exists(following.filter(id=OuterRef('author__profile__id')))
-                )
-                .order_by('-is_interesting', '-created_at')
-            )
+        if not value:
+            return queryset
 
-        return queryset
+        following = self.request.user.profile.following
+        return queryset.annotate(
+            is_interesting=Exists(following.filter(id=OuterRef('author__profile__id')))
+        ).order_by('-is_interesting', '-created_at')
 
     def filter_popular(self, queryset: T, name: str, value: bool) -> T:
         """Filter QuerySet by likes count."""
+        if not value:
+            return queryset
 
-        if value:
-            queryset = queryset.annotate(
-                liked_cnt=Count('liked')
-            ).order_by('-liked_cnt', '-created_at')
-
-        return queryset
+        return queryset.annotate(
+            liked_count=Count('liked')
+        ).order_by('-liked_count', '-created_at')
 
     def ordering_filter(self, queryset: T, name: str, value: str) -> T:
         """Order QuerySet by created_at."""

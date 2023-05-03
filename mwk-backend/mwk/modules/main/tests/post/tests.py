@@ -69,8 +69,8 @@ class PostsTestCase(APITestCase):
 
         posts[1].like(user)
 
-        posts = posts.annotate(liked_cnt=Count('liked')).order_by(
-            '-liked_cnt', '-created_at'
+        posts = posts.annotate(liked_count=Count('liked')).order_by(
+            '-liked_count', '-created_at'
         )
 
         return posts
@@ -98,8 +98,8 @@ class PostsTestCase(APITestCase):
         posts[2].like(user)
         posts[1].like(user)
 
-        posts = posts.annotate(liked_cnt=Count('liked')).order_by(
-            '-liked_cnt', ordering
+        posts = posts.annotate(liked_count=Count('liked')).order_by(
+            '-liked_count', ordering
         )
 
         return posts

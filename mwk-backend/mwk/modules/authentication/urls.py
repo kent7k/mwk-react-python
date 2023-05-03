@@ -9,7 +9,7 @@ from mwk.modules.authentication.views.user_register_view import UserRegisterAPIV
 
 
 urlpatterns = [
-    path('', UserRegisterAPIView.as_view(), name='reg'),
+    path('register/', UserRegisterAPIView.as_view(), name='register'),
     path('confirm/<str:uid>/<str:token>/', UserActivateAPIView.as_view(), name='activate'),
     path('login/', UserLoginAPIView.as_view(), name='login'),
     path('logout/', UserLogoutAPIView.as_view(), name='logout'),

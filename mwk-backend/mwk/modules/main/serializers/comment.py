@@ -16,8 +16,8 @@ from mwk.modules.main.serializers.image import ImageSerializer
 
 class CommentSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer):
     is_user_liked_comment = serializers.BooleanField(read_only=True)
-    like_cnt = serializers.IntegerField(read_only=True, default=0)
-    replies_cnt = serializers.IntegerField(read_only=True)
+    liked_count = serializers.IntegerField(read_only=True, default=0)
+    replies_count = serializers.IntegerField(read_only=True)
     images = ImageSerializer(many=True, read_only=True, source='images_comment')
     author = CurrentAuthorField(default=serializers.CurrentUserDefault())
     replies = serializers.SerializerMethodField(read_only=True)
@@ -119,9 +119,9 @@ class CommentSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializ
             'body',
             'is_user_liked_comment',
             'replies',
-            'like_cnt',
+            'liked_count',
             'images',
             'author',
-            'replies_cnt',
+            'replies_count',
         ]
         extra_kwargs = {'body': {'required': False}}

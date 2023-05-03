@@ -65,7 +65,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_and_activation_and_login(self):
         """A test that tries to register and activate user and then performs a login"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = self.register_data
 
         response = self.client.post(url, data, format='json')
