@@ -37,7 +37,7 @@ class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet
 
     def get_serializer_class(self) -> Type[Serializer]:
         actions_serializers = {
-            'get_comments': self.comments_serializer_class,
+            'get_all_comments': self.comments_serializer_class,
             'get_categories': self.categories_serializer_class,
         }
 
@@ -74,7 +74,7 @@ class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet
         return Response(serializer.data)
 
     @action(detail=True, methods=['get'])
-    def get_comments(self, request, pk: int = None) -> Response:
+    def get_all_comments(self, request, pk: int = None) -> Response:
         """Get comments for a post"""
 
         comments = self.get_cached_queryset(get_post_comments(request.user, pk))

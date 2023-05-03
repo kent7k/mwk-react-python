@@ -47,14 +47,14 @@ class PostSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer)
         return super().validate(attrs)
 
     def images_create(
-        self, images: Iterable, post_id: int, is_update: bool = False
+        self, images: Iterable, post_id: int, is_updated: bool = False
     ) -> None:
         """
         Adds images to the post
         """
 
         author = self.context.get('request').user
-        create_post_images(images, post_id, author, is_update)
+        create_post_images(images, post_id, author, is_updated)
 
     def create(self, validated_data: dict) -> Post:
         instance = super().create(validated_data)
@@ -67,7 +67,7 @@ class PostSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer)
         instance = super().update(instance, validated_data)
         images = self.context.get('request').FILES.getlist('images')
 
-        self.images_create(images, instance.id, is_update=True)
+        self.images_create(images, instance.id, is_updated=True)
         return instance
 
     class Meta:

@@ -52,7 +52,7 @@ class CommentsTestCase(APITestCase):
 
         Comment.objects.bulk_create(comment_objects)
 
-    def get_comments(self, page_size: int = api_settings.PAGE_SIZE):
+    def get_all_comments(self, page_size: int = api_settings.PAGE_SIZE):
         """Create comments and return ready queryset"""
 
         self.create_comments(page_size)
@@ -64,7 +64,7 @@ class CommentsTestCase(APITestCase):
 
         url = reverse('post_comments', kwargs={'pk': self.post.id})
 
-        comments = self.get_comments()
+        comments = self.get_all_comments()
 
         self.authenticate(self.token)
         response = self.client.get(url)

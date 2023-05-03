@@ -7,12 +7,12 @@ from mwk.modules.main.models.image import Image
 T = TypeVar('T')
 
 
-def create_images(
-    images: Collection, author: User, is_update: bool = False, **filters: dict
+def save_images_to_database(
+    images: Collection, author: User, is_updated: bool = False, **filters: dict
 ) -> None:
     """Helper function for adding images to instance (must be obtained by filtering with **filters)"""
 
-    if is_update and any(images):
+    if is_updated:
         Image.objects.filter(**filters).delete()
 
     images = [Image(photo=image, author=author, **filters) for image in images]

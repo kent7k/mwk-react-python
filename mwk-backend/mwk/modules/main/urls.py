@@ -30,7 +30,7 @@ urlpatterns = [
         '<int:pk>/comments/',
         PostViewSet.as_view(
             {
-                'get': 'get_comments',
+                'get': 'get_all_comments',
             }
         ),
         name='post_comments',

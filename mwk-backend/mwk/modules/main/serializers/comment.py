@@ -10,7 +10,7 @@ from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
 from mwk.modules.main.models.comment import Comment
 
 
-from mwk.modules.main.services.create_comment_images import create_comment_images
+from mwk.modules.main.services.add_images_to_comment import add_images_to_comment
 from mwk.modules.main.serializers.image import ImageSerializer
 
 
@@ -99,7 +99,7 @@ class CommentSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializ
         """
 
         author = self.context.get('request').user
-        create_comment_images(images, comment_id, author)
+        add_images_to_comment(images, comment_id, author)
 
     def create(self, validated_data: dict) -> Comment:
         instance = super().create(validated_data)
