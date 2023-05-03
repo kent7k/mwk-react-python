@@ -9,7 +9,7 @@ from mwk.modules.main.helpers.create_retrieve_update_destroy_viewset import Crea
 from mwk.modules.main.models.comment import Comment
 from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.comment_update import CommentUpdateSerializer
-from mwk.modules.main.services.get_comment_descendants import get_comment_descendants
+from mwk.modules.main.services.get_descendant_comments import get_descendant_comments
 
 from mwk.modules.main.mixins import IsAuthorPermissionsMixin
 
@@ -36,7 +36,7 @@ class CommentViewSet(IsAuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSe
         """Get all comment descendants in a flat view"""
 
         parent: Comment = get_object_or_404(Comment, pk=pk)
-        descendants = get_comment_descendants(parent, request.user)
+        descendants = get_descendant_comments(parent, request.user)
 
         page = self.paginate_queryset(descendants)
 

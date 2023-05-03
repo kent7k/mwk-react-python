@@ -1,26 +1,69 @@
-from typing import Collection, TypeVar, Dict
+from typing import TypeVar
 
-from django.contrib.auth.models import User
+from django.db.models import Count, Exists, OuterRef
+from django.forms import CheckboxInput, Select
+from django_filters import rest_framework as filters
 
-from mwk.modules.main.models.image import Image
-
-QuerySetType = TypeVar('QuerySetType', bound='QuerySet')
+from mwk.modules.main.models.post import Post
 
 
-def save_images(images: Collection, author: User, is_updated: bool = False, **filters: Dict) -> None:
-    """
-    Save a collection of images to the database.
+class PostFilter(filters.FilterSet):
+    T = TypeVar('T')
 
-    Args:
-        images (Collection): The images to be saved.
-        author (User): The user who uploaded the images.
-        is_updated (bool): Whether the images are being updated or not.
-        filters (dict): Filters to apply when querying the images to be updated.
-    """
+    CHOICES = (
+        ('created_at', 'Oldest first'),
+        ('-created_at', 'Newest first'),
+    )
 
-    if is_updated:
-        Image.objects.filter(**filters).delete()
+    is_interesting = filters.BooleanFilter(
+        method='filter_interesting',
+        widget=CheckboxInput(attrs={'class': 'filter', 'id': 'radio1'}),
+        label='Interesting',
+    )
 
-    image_objects = [Image(photo=image, author=author, **filters) for image in images]
+    is_popular = filters.BooleanFilter(
+        method='filter_popular',
+        widget=CheckboxInput(attrs={'class': 'filter', 'id': 'radio2'}),
+        label='Popular',
+    )
 
-    Image.objects.bulk_create(image_objects)
+    date_ordering = filters.ChoiceFilter(
+        choices=CHOICES,
+        method='ordering_filter',
+        widget=Select(attrs={'class': 'filter', 'id': 'date_ordering'}),
+        label='By date',
+    )
+
+    class Meta:
+        model = Post
+        fields = ['category']
+
+    def filter_interesting(self, queryset: T, name: str, value: bool) -> T:
+        """Filter QuerySet by user.profile.following posts."""
+        if value:
+            following = self.request.user.profile.following
+            queryset = (
+                queryset.annotate(
+                    is_interesting=Exists(following.filter(id=OuterRef('author__profile__id')))
+                )
+                .order_by('-is_interesting', '-created_at')
+            )
+
+        return queryset
+
+    def filter_popular(self, queryset: T, name: str, value: bool) -> T:
+        """Filter QuerySet by likes count."""
+        if value:
+            queryset = queryset.annotate(liked_cnt=Count('liked')).order_by('-liked_cnt', '-created_at')
+
+        return queryset
+
+    def ordering_filter(self, queryset: T, name: str, value: str) -> T:
+        """Order QuerySet by created_at."""
+        if self.data.get('is_interesting'):
+            queryset = self.filter_interesting(queryset, name, True)
+
+        if self.data.get('is_popular'):
+            queryset = self.filter_popular(queryset, name, True)
+
+        return queryset.order_by(value)
