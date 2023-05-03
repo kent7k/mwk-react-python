@@ -9,7 +9,7 @@ from mwk.modules.main.models.image import Image
 from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.serializers.comment import CommentSerializer
-from mwk.modules.main.services import get_post_comments
+from mwk.modules.main.services.get_post_comments import get_post_comments
 
 
 class CommentsTestCase(APITestCase):

@@ -11,7 +11,7 @@ from mwk.modules.main.models.image import Image
 from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.serializers.post import PostSerializer
-from mwk.modules.main.services import get_posts
+from mwk.modules.main.services.get_posts import get_posts
 
 
 class PostsTestCase(APITestCase):
