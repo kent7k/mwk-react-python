@@ -9,7 +9,7 @@ from mwk.modules.main.models.post import Post
 T = TypeVar('T')
 
 
-def get_posts(user: User) -> list[Post]:
+def get_all_posts(user: User) -> list[Post]:
     def annotate_with_counts(queryset):
         return queryset.annotate(
             viewers_count=Count('viewers', distinct=True),

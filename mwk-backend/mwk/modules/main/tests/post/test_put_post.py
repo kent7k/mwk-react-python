@@ -8,7 +8,7 @@ from rest_framework.settings import api_settings
 from rest_framework.test import APITestCase
 
 from mwk.modules.main.models.post import Post
-from mwk.modules.main.services.get_posts import get_posts as get_posts_queryset
+from mwk.modules.main.services.get_all_posts import get_all_posts as get_posts_queryset
 
 
 class PostsTestCase(APITestCase):
@@ -43,7 +43,7 @@ class PostsTestCase(APITestCase):
             post.created_at = timezone.now() + timedelta(minutes=i)
             post.save()
 
-    def get_posts(self, page_size: int = api_settings.PAGE_SIZE):
+    def get_all_posts(self, page_size: int = api_settings.PAGE_SIZE):
         """Create posts and return ready queryset"""
 
         self.create_posts(page_size)
@@ -52,7 +52,7 @@ class PostsTestCase(APITestCase):
 
     def test_put_post(self):
 
-        post = self.get_posts(3).last()
+        post = self.get_all_posts(3).last()
 
         url = reverse('post', kwargs={'pk': post.id})
 

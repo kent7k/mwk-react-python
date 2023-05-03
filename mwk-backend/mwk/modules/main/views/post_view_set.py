@@ -15,8 +15,8 @@ from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.post_category import PostCategorySerializer
 from mwk.modules.main.serializers.post import PostSerializer
 from mwk.modules.main.mixins import IsAuthorPermissionsMixin
-from mwk.modules.main.services.get_post_comments import get_post_comments
-from mwk.modules.main.services.get_posts import get_posts
+from mwk.modules.main.services.get_comments_for_post import get_comments_for_post
+from mwk.modules.main.services.get_all_posts import get_all_posts
 from mwk.modules.main.services.get_post_categories import get_post_categories
 
 
@@ -33,7 +33,7 @@ class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet
     depth = 2  # comments depth
 
     def get_queryset(self):
-        return get_posts(self.request.user)
+        return get_all_posts(self.request.user)
 
     def get_serializer_class(self) -> Type[Serializer]:
         actions_serializers = {
@@ -77,7 +77,7 @@ class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet
     def get_all_comments(self, request, pk: int = None) -> Response:
         """Get comments for a post"""
 
-        comments = self.get_cached_queryset(get_post_comments(request.user, pk))
+        comments = self.get_cached_queryset(get_comments_for_post(request.user, pk))
 
         page = self.paginate_queryset(comments)
 

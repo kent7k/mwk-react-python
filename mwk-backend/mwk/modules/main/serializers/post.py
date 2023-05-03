@@ -9,7 +9,7 @@ from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
 from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 
-from mwk.modules.main.services.create_post_images import create_post_images
+from mwk.modules.main.services.add_images_to_post import add_images_to_post
 
 from mwk.modules.main.serializers.image import ImageSerializer
 
@@ -54,7 +54,7 @@ class PostSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer)
         """
 
         author = self.context.get('request').user
-        create_post_images(images, post_id, author, is_updated)
+        add_images_to_post(images, post_id, author, is_updated)
 
     def create(self, validated_data: dict) -> Post:
         instance = super().create(validated_data)

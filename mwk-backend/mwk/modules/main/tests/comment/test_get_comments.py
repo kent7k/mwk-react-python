@@ -7,7 +7,7 @@ from rest_framework.test import APITestCase
 from mwk.modules.main.models.comment import Comment
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.serializers.comment import CommentSerializer
-from mwk.modules.main.services.get_post_comments import get_post_comments
+from mwk.modules.main.services.get_comments_for_post import get_comments_for_post
 
 
 class CommentsTestCase(APITestCase):
@@ -57,7 +57,7 @@ class CommentsTestCase(APITestCase):
 
         self.create_comments(page_size)
 
-        return get_post_comments(self.user, self.post.id)
+        return get_comments_for_post(self.user, self.post.id)
 
     def test_get_comments(self):
         """Test getting comments"""
