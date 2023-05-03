@@ -5,13 +5,20 @@ from mwk.modules.authentication.models.profile import Profile
 
 class Contact(models.Model):
     user_to = models.ForeignKey(
-        Profile, related_name='to_set', on_delete=models.CASCADE, verbose_name='На'
+        Profile, related_name='to_set',
+        on_delete=models.CASCADE,
+        verbose_name='На'
     )
     user_from = models.ForeignKey(
-        Profile, related_name='from_set', on_delete=models.CASCADE, verbose_name='От'
+        Profile,
+        related_name='from_set',
+        on_delete=models.CASCADE,
+        verbose_name='From'
     )
     created_at = models.DateTimeField(
-        auto_now_add=True, db_index=True, verbose_name='Created at'
+        auto_now_add=True,
+        db_index=True,
+        verbose_name='Created at'
     )
 
     def __str__(self) -> str:
