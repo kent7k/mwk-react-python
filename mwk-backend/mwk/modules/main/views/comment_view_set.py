@@ -45,7 +45,7 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
             return Response(serializer.data)
 
     @action(detail=False, methods=['put'])
-    def like_comment(self, request) -> Response:
+    def like_post_comment(self, request) -> Response:
         pk = request.data.get('comment')
 
         if not pk:
@@ -53,6 +53,6 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
 
         comment = get_object_or_404(Comment, pk=pk)
 
-        action = 'add' if comment.like(request.user) else 'remove'
+        like_post_comment_action = 'add' if comment.like(request.user) else 'remove'
 
-        return Response({'action': action})
+        return Response({'action': like_post_comment_action})

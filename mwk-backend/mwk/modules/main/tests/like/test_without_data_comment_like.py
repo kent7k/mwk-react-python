@@ -37,7 +37,7 @@ class LikeTestCase(APITestCase):
 
     def test_without_data_comment_like(self):
         """Test that liking a comment without data returns a 400 error."""
-        url = reverse('like_comment')
+        url = reverse('like_post_comment')
         response = self.client.put(url, data={})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

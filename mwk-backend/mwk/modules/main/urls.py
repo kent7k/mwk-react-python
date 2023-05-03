@@ -84,9 +84,9 @@ urlpatterns = [
         'comment/like/',
         CommentViewSet.as_view(
             {
-                'put': 'like_comment'
+                'put': 'like_post_comment'
             }
         ),
-        name='like_comment',
+        name='like_post_comment',
     ),
 ]
