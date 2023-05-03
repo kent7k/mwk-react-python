@@ -11,10 +11,10 @@ from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.comment_update import CommentUpdateSerializer
 from mwk.modules.main.services.get_descendant_comments import get_descendant_comments
 
-from mwk.modules.main.mixins.is_author_permissions_mixin import IsAuthorPermissionsMixin
+from mwk.modules.main.mixins.author_permissions_mixin import AuthorPermissionsMixin
 
 
-class CommentViewSet(IsAuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet):
+class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet):
     """Viewset for Comments"""
 
     serializer_class = CommentSerializer

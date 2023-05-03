@@ -14,13 +14,13 @@ from mwk.modules.main.mixins.cache_tree_queryset_mixin import CacheTreeQuerysetM
 from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.post_category import PostCategorySerializer
 from mwk.modules.main.serializers.post import PostSerializer
-from mwk.modules.main.mixins.is_author_permissions_mixin import IsAuthorPermissionsMixin
+from mwk.modules.main.mixins.author_permissions_mixin import AuthorPermissionsMixin
 from mwk.modules.main.services.get_comments_for_post import get_comments_for_post
 from mwk.modules.main.services.get_all_posts import get_all_posts
 from mwk.modules.main.services.get_post_categories import get_post_categories
 
 
-class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):
+class PostViewSet(AuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):
     """Viewset for Posts"""
 
     serializer_class = PostSerializer
