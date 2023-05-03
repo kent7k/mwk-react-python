@@ -76,7 +76,7 @@ urlpatterns = [
         'comment/<int:pk>/descendants/',
         CommentViewSet.as_view(
             {
-                'get': 'get_descendants',
+                'get': 'get_comment_replies',
             }
         ),
     ),

@@ -10,12 +10,10 @@ from mwk.modules.main.models.comment import Comment
 from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.comment_update import CommentUpdateSerializer
 from mwk.modules.main.services.get_descendant_comments import get_descendant_comments
-
 from mwk.modules.main.mixins.author_permissions_mixin import AuthorPermissionsMixin
 
 
 class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet):
-    """Viewset for Comments"""
 
     serializer_class = CommentSerializer
     update_serializer_class = CommentUpdateSerializer
@@ -32,20 +30,19 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
         return self.update_serializer_class if self.request.method == 'PATCH' else super().get_serializer_class()
 
     @action(detail=True, methods=['get'])
-    def get_descendants(self, request, pk: int = None):
-        """Get all comment descendants in a flat view"""
+    def get_comment_replies(self, request, pk: int = None):
 
-        parent: Comment = get_object_or_404(Comment, pk=pk)
-        descendants = get_descendant_comments(parent, request.user)
+        comment = get_object_or_404(Comment, pk=pk)
+        descendants = get_descendant_comments(comment, request.user)
 
         page = self.paginate_queryset(descendants)
 
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(descendants, many=True)
-        return Response(serializer.data)
+        else:
+            serializer = self.get_serializer(descendants, many=True)
+            return Response(serializer.data)
 
     @action(detail=False, methods=['put'])
     def like_comment(self, request) -> Response:

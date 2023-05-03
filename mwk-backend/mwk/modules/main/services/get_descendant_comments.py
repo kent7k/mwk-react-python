@@ -7,4 +7,4 @@ from mwk.modules.main.services.get_comments_queryset import get_comments_queryse
 
 
 def get_descendant_comments(comment: Comment, user: User) -> List[Comment]:
-    return get_comments_queryset(comment.get_descendants(), user)
+    return get_comments_queryset(comment.get_comment_replies(), user)

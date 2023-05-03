@@ -59,7 +59,7 @@ export const commentsSlice = createSlice({
       const updatedComment = {
         ...comment,
         is_user_liked_comment: isAdd,
-        like_cnt: comment.like_cnt + (isAdd ? 1 : -1),
+        liked_count: comment.liked_count + (isAdd ? 1 : -1),
       }
 
       const updatedPostComments = state.postComments.map((c) =>
