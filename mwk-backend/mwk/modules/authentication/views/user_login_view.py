@@ -19,11 +19,11 @@ class UserLoginAPIView(LoginView):
     permission_classes = (Authenticated,)
 
     def get_post_response_data(
-            self,
-            request,
-            token: str,
-            instance: AuthToken,
-            user: User,
+        self,
+        request,
+        token: str,
+        instance: AuthToken,
+        user: User,
     ) -> dict:
         UserSerializer: Type[Serializer] = self.get_user_serializer_class()
 
@@ -33,8 +33,6 @@ class UserLoginAPIView(LoginView):
             'user': UserSerializer(user, context=self.get_context()).data if UserSerializer else None,
         }
 
-        if UserSerializer is not None:
-            data['user'] = UserSerializer(user, context=self.get_context()).data
         return data
 
     @extend_schema(request=KnoxTokenSerializer, responses=KnoxTokenSerializer)

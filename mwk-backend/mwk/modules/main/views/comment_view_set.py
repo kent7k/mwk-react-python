@@ -61,4 +61,3 @@ class CommentViewSet(IsAuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSe
         action = 'add' if comment.like(request.user) else 'remove'
 
         return Response({'action': action})
-
