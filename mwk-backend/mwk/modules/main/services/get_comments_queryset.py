@@ -1,4 +1,4 @@
-from typing import Collection, TypeVar
+from typing import TypeVar
 
 from django.contrib.auth.models import User
 from django.db.models import Count, Exists, OuterRef

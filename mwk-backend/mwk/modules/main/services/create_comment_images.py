@@ -1,4 +1,4 @@
-from typing import Collection, TypeVar
+from typing import Collection
 
 from django.contrib.auth.models import User
 from mwk.modules.main.services.create_images import create_images
