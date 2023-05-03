@@ -74,18 +74,6 @@ const userSlice = createSlice({
     },
 
     /**
-     * Set cities and countries states to the []
-     * @param {Object} state
-     */
-    clearGeo(state) {
-      return {
-        ...state,
-        cities: [],
-        countries: [],
-      }
-    },
-
-    /**
      * Remove token from ls and set token state to the null
      * @param {Object} state
      */
@@ -224,6 +212,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { clearSuccess, clearCities, clearGeo, removeToken } =
+export const { clearSuccess, removeToken } =
   userSlice.actions
 export default userSlice.reducer
