@@ -15,8 +15,17 @@ class Profile(models.Model):
         related_query_name='profile',
         verbose_name='User',
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created')
-    bio = models.CharField(max_length=100, verbose_name='Status', blank=True)
+
+    bio = models.CharField(
+        max_length=100,
+        verbose_name='Status',
+        blank=True
+    )
+
+    birthday = models.DateField(
+        verbose_name='Birthday',
+        null=True
+    )
 
     avatar = models.ImageField(
         verbose_name='Avatar',
@@ -26,9 +35,16 @@ class Profile(models.Model):
     )
 
     followers = models.ManyToManyField(
-        'self', through='Contact', related_name='following', symmetrical=False
+        'self',
+        through='Contact',
+        related_name='following',
+        symmetrical=False
     )
-    birthday = models.DateField(verbose_name='Birthday', null=True)
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Created'
+    )
 
     def __str__(self) -> str:
         return self.user.username
