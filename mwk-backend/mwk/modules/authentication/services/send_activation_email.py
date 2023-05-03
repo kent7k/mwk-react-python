@@ -21,7 +21,7 @@ class ActivationEmail(BaseEmailMessage):
         uid = encode_uid(user.id)
         token = AuthenticationToken().make_token(user)
 
-        url: str = settings.USER_ACTIVATION_URL.format(uid, token)
+        url = f"{settings.USER_ACTIVATION_URL.format(uid, token)}"
 
         context['url'] = url
         context['sitename'] = settings.AUTHENTICATION_SITENAME

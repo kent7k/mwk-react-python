@@ -7,7 +7,7 @@ from mwk.modules.main.models.image import Image
 T = TypeVar('T')
 
 
-def save_images_to_database(
+def save_images(
     images: Collection, author: User, is_updated: bool = False, **filters: dict
 ) -> None:
     """Helper function for adding images to instance (must be obtained by filtering with **filters)"""

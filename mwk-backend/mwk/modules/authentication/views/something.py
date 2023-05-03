@@ -1,22 +1,26 @@
-from datetime import datetime
+from typing import Collection, TypeVar, Dict
 
 from django.contrib.auth.models import User
-from django.contrib.auth.signals import user_logged_in
-from django.utils import timezone
-from django.utils.translation import gettext as _
-from knox.models import AuthToken
-from rest_framework.response import Response
+
+from mwk.modules.main.models.image import Image
+
+QuerySetType = TypeVar('QuerySetType', bound='QuerySet')
 
 
-def create_auth_token(request, user: User, token_limit_per_user: int, token_ttl: datetime) -> Response:
-    if token_limit_per_user is not None:
-        now = timezone.now()
-        if user.auth_token_set.filter(expiry__gt=now).count() >= token_limit_per_user:
-            return Response(
-                {'error': _('The maximum number of tokens per user has been reached.')},
-                status=403,
-            )
+def save_images(images: Collection, author: User, is_updated: bool = False, **filters: Dict) -> None:
+    """
+    Save a collection of images to the database.
 
-    instance, token = AuthToken.objects.create(user, token_ttl)
-    user_logged_in.send(sender=user.__class__, request=request, user=user)
-    return request, token, instance
+    Args:
+        images (Collection): The images to be saved.
+        author (User): The user who uploaded the images.
+        is_updated (bool): Whether the images are being updated or not.
+        filters (dict): Filters to apply when querying the images to be updated.
+    """
+
+    if is_updated:
+        Image.objects.filter(**filters).delete()
+
+    image_objects = [Image(photo=image, author=author, **filters) for image in images]
+
+    Image.objects.bulk_create(image_objects)

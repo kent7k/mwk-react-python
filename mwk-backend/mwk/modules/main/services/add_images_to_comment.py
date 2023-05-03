@@ -1,7 +1,7 @@
 from typing import Collection
 
 from django.contrib.auth.models import User
-from mwk.modules.main.services.save_images_to_database import save_images_to_database
+from mwk.modules.main.services.save_images import save_images
 
 
 def add_images_to_comment(
@@ -11,4 +11,4 @@ def add_images_to_comment(
     Adds images to the comment
     """
 
-    save_images_to_database(images, author, is_updated, comment_id=comment_id)
+    save_images(images, author, is_updated, comment_id=comment_id)
