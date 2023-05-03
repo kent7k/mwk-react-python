@@ -10,7 +10,7 @@ from drf_spectacular.utils import extend_schema
 
 from mwk.modules.authentication.permissions import Authenticated
 from mwk.modules.authentication.serializers.knox_token import KnoxTokenSerializer
-from mwk.modules.authentication.services import activate_user, create_authtoken, send_activation_email
+from mwk.modules.authentication.services.create_authtoken import create_authtoken
 
 
 class UserLoginAPIView(LoginView):
@@ -19,11 +19,19 @@ class UserLoginAPIView(LoginView):
     permission_classes = (Authenticated,)
 
     def get_post_response_data(
-        self, request, token: str, instance: AuthToken, user: User
+            self,
+            request,
+            token: str,
+            instance: AuthToken,
+            user: User,
     ) -> dict:
         UserSerializer: Type[Serializer] = self.get_user_serializer_class()
 
-        data = {'expiry': self.format_expiry_datetime(instance.expiry), 'token': token}
+        data = {
+            'expiry': self.format_expiry_datetime(instance.expiry),
+            'token': token,
+            'user': UserSerializer(user, context=self.get_context()).data if UserSerializer else None,
+        }
 
         if UserSerializer is not None:
             data['user'] = UserSerializer(user, context=self.get_context()).data
@@ -36,7 +44,10 @@ class UserLoginAPIView(LoginView):
 
         user = serializer.validated_data['user']
         token_data = create_authtoken(
-            request, user, self.get_token_limit_per_user(), self.get_token_ttl()
+            request,
+            user,
+            self.get_token_limit_per_user(),
+            self.get_token_ttl()
         )
 
         return Response(self.get_post_response_data(*token_data, user))

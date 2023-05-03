@@ -8,18 +8,16 @@ from rest_framework.serializers import Serializer
 from rest_framework.views import Response
 from rest_framework.viewsets import ModelViewSet
 
-from mwk.modules.main.models.comment import Comment
-from mwk.modules.main.models.image import Image
-from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.filters import PostFilter, filters
 from mwk.modules.main.mixins import CacheTreeQuerysetMixin
 from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.post_category import PostCategorySerializer
 from mwk.modules.main.serializers.post import PostSerializer
-from mwk.modules.main.services import (get_comment_descendants, get_comments,
-                       get_post_categories, get_post_comments, get_posts)
 from mwk.modules.main.mixins import IsAuthorPermissionsMixin
+from mwk.modules.main.services.get_post_comments import get_post_comments
+from mwk.modules.main.services.get_posts import get_posts
+from mwk.modules.main.services.get_post_categories import get_post_categories
 
 
 class PostViewSet(IsAuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):

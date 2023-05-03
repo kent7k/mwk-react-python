@@ -1,13 +1,13 @@
 from typing import Type
 
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
 from mwk.modules.authentication.permissions import Authenticated
 from mwk.modules.authentication.serializers.activation import ActivationSerializer
-from mwk.modules.authentication.services import activate_user, create_authtoken, send_activation_email
+from mwk.modules.authentication.services.activate_user import activate_user
 from mwk.modules.authentication.tokens import AuthenticationToken
 
 
@@ -27,4 +27,4 @@ class UserActivateAPIView(generics.GenericAPIView):
         user: User = serializer.user
         activate_user(user)
 
-        return Response(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
