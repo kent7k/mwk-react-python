@@ -8,7 +8,7 @@ from knox.models import AuthToken
 from rest_framework.response import Response
 
 
-def create_authtoken(request, user: User, token_limit_per_user: int, token_ttl: datetime) -> Response:
+def create_auth_token(request, user: User, token_limit_per_user: int, token_ttl: datetime) -> Response:
     if token_limit_per_user is not None:
         now = timezone.now()
         if user.auth_token_set.filter(expiry__gt=now).count() >= token_limit_per_user:

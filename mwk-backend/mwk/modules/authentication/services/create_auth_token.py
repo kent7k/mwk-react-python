@@ -8,7 +8,7 @@ from knox.models import AuthToken
 from rest_framework.response import Response
 
 
-def create_authtoken(
+def create_auth_token(
     request, user: User, token_limit_per_user: int, token_ttl: datetime
 ) -> Response:
     if token_limit_per_user is not None:
