@@ -11,10 +11,6 @@ from rest_framework.response import Response
 def create_authtoken(
     request, user: User, token_limit_per_user: int, token_ttl: datetime
 ) -> Response:
-    """
-    Creates an Auth Token for the specified user, if the token limit is exceeded, raises a 403 HTTP error
-    """
-
     if token_limit_per_user is not None:
         now = timezone.now()
         token = user.auth_token_set.filter(expiry__gt=now)
