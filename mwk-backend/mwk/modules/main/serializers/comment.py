@@ -8,11 +8,9 @@ from mwk.modules.main.fields import CurrentAuthorField, DateTimeTimezoneField, P
 from mwk.modules.main.helpers.helpers import validate_images
 from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
 from mwk.modules.main.models.comment import Comment
-from mwk.modules.main.models.image import Image
-from mwk.modules.main.models.post_category import PostCategory
-from mwk.modules.main.models.post import Post
 
-from mwk.modules.main.services import create_comment_images, create_post_images
+
+from mwk.modules.main.services.create_comment_images import create_comment_images
 from mwk.modules.main.serializers.image import ImageSerializer
 
 
