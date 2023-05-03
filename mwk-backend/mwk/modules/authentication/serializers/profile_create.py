@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from drf_extra_fields.fields import HybridImageField
 from rest_framework import serializers
 
-from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
+from mwk.modules.main.mixins.error_messages_serializers_mixin import ErrorMessagesSerializersMixin
 
 from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
 from mwk.modules.authentication.models.profile import Profile

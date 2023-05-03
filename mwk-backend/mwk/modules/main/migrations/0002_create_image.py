@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 (
                     'photo',
                     models.ImageField(
-                        upload_to=mwk.modules.main.helpers.helpers.PathAndRenameDate(
+                        upload_to=mwk.modules.main.helpers.helpers.PathWithDateAndUUID(
                             'photos/posts/'
                             ),
                         verbose_name='Photo',

@@ -7,7 +7,7 @@ from django.db.utils import IntegrityError
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
-from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
+from mwk.modules.main.mixins.error_messages_serializers_mixin import ErrorMessagesSerializersMixin
 
 from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
 from mwk.modules.authentication.services.register_user import register_user

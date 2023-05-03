@@ -10,11 +10,11 @@ from rest_framework.viewsets import ModelViewSet
 
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.filters import PostFilter, filters
-from mwk.modules.main.mixins import CacheTreeQuerysetMixin
+from mwk.modules.main.mixins.cache_tree_queryset_mixin import CacheTreeQuerysetMixin
 from mwk.modules.main.serializers.comment import CommentSerializer
 from mwk.modules.main.serializers.post_category import PostCategorySerializer
 from mwk.modules.main.serializers.post import PostSerializer
-from mwk.modules.main.mixins import IsAuthorPermissionsMixin
+from mwk.modules.main.mixins.is_author_permissions_mixin import IsAuthorPermissionsMixin
 from mwk.modules.main.services.get_comments_for_post import get_comments_for_post
 from mwk.modules.main.services.get_all_posts import get_all_posts
 from mwk.modules.main.services.get_post_categories import get_post_categories

@@ -6,7 +6,7 @@ from rest_framework import serializers
 
 from mwk.modules.main.fields import CurrentAuthorField, DateTimeTimezoneField, PostCategoryField
 from mwk.modules.main.helpers.helpers import validate_images
-from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
+from mwk.modules.main.mixins.error_messages_serializers_mixin import ErrorMessagesSerializersMixin
 from mwk.modules.main.models.comment import Comment
 
 
