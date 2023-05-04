@@ -61,7 +61,7 @@ class Comment(MPTTModel):
         return True
 
     class Meta:
-        verbose_name = 'comment'
+        verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
         ordering = ('-created_at',)
 

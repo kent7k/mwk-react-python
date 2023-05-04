@@ -47,10 +47,10 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
 
     @action(detail=False, methods=['put'])
     def like_post_comment(self, request) -> Response:
-        comment_id = request.data.get('comment')
+        comment_id = request.data.get('Comment')
 
         if not comment_id:
-            raise ValidationError({'comment': _('This field is required.')})
+            raise ValidationError({'Comment': _('This field is required.')})
 
         comment = get_object_or_404(Comment, pk=comment_id)
 
