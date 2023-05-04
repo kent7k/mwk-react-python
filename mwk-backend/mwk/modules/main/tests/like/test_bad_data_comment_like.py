@@ -39,7 +39,7 @@ class LikeTestCase(APITestCase):
         """Test that like comment endpoint returns errors for bad data"""
 
         url = reverse('like_post_comment')
-        data = {'comment': 245}
+        data = {'Comment': 245}
         response = self.client.put(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -49,7 +49,7 @@ class LikeTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = {'comment': []}
+        data = {'Comment': []}
         response = self.client.put(url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

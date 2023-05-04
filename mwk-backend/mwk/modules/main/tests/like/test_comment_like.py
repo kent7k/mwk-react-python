@@ -37,7 +37,7 @@ class CommentLikeTestCase(APITestCase):
     def test_comment_like(self):
         """A test to check likes and remove likes on a comment"""
         url = reverse('like_post_comment')
-        data = {'comment': self.comment.id}
+        data = {'Comment': self.comment.id}
 
         # add like
         response = self.client.put(url, data)

@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
                         null=True,
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name='replies',
-                        to='main.comment',
+                        to='main.Comment',
                         verbose_name='Parent comment',
                     ),
                 ),
@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name='images_comment',
                         related_query_name='images_comment',
-                        to='main.comment',
+                        to='main.Comment',
                         verbose_name='Comment',
                     ),
                 )
