@@ -1,9 +1,11 @@
-from typing import Type
+from typing import Type, Dict, Any
 
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext as _
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import Serializer
-from rest_framework.views import Response
+from rest_framework.response import Response
 
 from mwk.modules.main.helpers.create_retrieve_update_destroy_viewset import CreateRetrieveUpdateDestroyViewSet
 from mwk.modules.main.models.comment import Comment
@@ -18,7 +20,7 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
     serializer_class = CommentSerializer
     update_serializer_class = CommentUpdateSerializer
 
-    def get_serializer_context(self) -> dict:
+    def get_serializer_context(self) -> Dict[str, Any]:
         return {
             'request': self.request,
             'format': self.format_kwarg,
@@ -30,8 +32,7 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
         return self.update_serializer_class if self.request.method == 'PATCH' else super().get_serializer_class()
 
     @action(detail=True, methods=['get'])
-    def get_comment_replies(self, request, pk: int = None):
-
+    def get_comment_replies(self, request, pk: int = None) -> Response:
         comment = get_object_or_404(Comment, pk=pk)
         descendants = get_descendant_comments(comment, request.user)
 
@@ -46,12 +47,12 @@ class CommentViewSet(AuthorPermissionsMixin, CreateRetrieveUpdateDestroyViewSet)
 
     @action(detail=False, methods=['put'])
     def like_post_comment(self, request) -> Response:
-        pk = request.data.get('comment')
+        comment_id = request.data.get('comment')
 
-        if not pk:
-            return Response(status=400)
+        if not comment_id:
+            raise ValidationError({'comment': _('This field is required.')})
 
-        comment = get_object_or_404(Comment, pk=pk)
+        comment = get_object_or_404(Comment, pk=comment_id)
 
         like_post_comment_action = 'add' if comment.like(request.user) else 'remove'
 
