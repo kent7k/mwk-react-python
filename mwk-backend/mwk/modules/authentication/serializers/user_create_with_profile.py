@@ -9,7 +9,7 @@ from rest_framework import serializers
 
 from mwk.modules.main.mixins.error_messages_serializers_mixin import ErrorMessagesSerializersMixin
 
-from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
+# from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
 from mwk.modules.authentication.services.register_user import register_user
 from mwk.modules.authentication.serializers.profile_create import ProfileCreateSerializer
 
@@ -18,7 +18,7 @@ class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers
     email = serializers.EmailField(
         label='Email address', required=True, write_only=True
     )
-    profile = ProfileCreateSerializer(required=True)
+    profile = ProfileCreateSerializer(required=False)
 
     default_error_messages = {
         'cannot_create_user': _(
@@ -50,23 +50,24 @@ class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers
             'password': {'write_only': True, 'validators': [validate_password]},
             'is_active': {'read_only': True},
             'username': {'max_length': 50, 'min_length': 4},
-            'first_name': {'required': False, 'allow_blank': False, 'max_length': 30},
-            'last_name': {'required': False, 'allow_blank': False, 'max_length': 30},
+            'first_name': {'required': False, 'allow_blank': True, 'max_length': 30},
+            'last_name': {'required': False, 'allow_blank': True, 'max_length': 30},
         }
 
     def validate(self, attrs: dict):
-        username, first_name, last_name = (
-            attrs.get('username'),
-            attrs.get('first_name'),
-            attrs.get('last_name'),
-        )
+        # username, first_name, last_name = (
+        #     attrs.get('username'),
+        #     attrs.get('first_name'),
+        #     attrs.get('last_name'),
+        # )
+        username = attrs.get('username')
 
-        if username.isdigit():
+        if username is not None and username.isdigit():
             self.fail('username_contains_only_digits')
-        if contains_digits(first_name):
-            self.fail('first_name_contains_digits')
-        if contains_digits(last_name):
-            self.fail('last_name_contains_digits')
+        # if contains_digits(first_name):
+        #     self.fail('first_name_contains_digits')
+        # if contains_digits(last_name):
+        #     self.fail('last_name_contains_digits')
         return super().validate(attrs)
 
     def create(self, validated_data: OrderedDict) -> Union[User, None]:
