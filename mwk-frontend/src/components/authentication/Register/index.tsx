@@ -6,7 +6,6 @@ import lodash_merge from 'lodash/merge'
 
 import { userRegister } from '../../../store/actions'
 import {
-  clearGeo,
   clearSuccess,
 } from '../../../store/slices/authentication/userSlice'
 import { Page404 } from '../../pages/Page404'
@@ -40,7 +39,6 @@ export const Register = () => {
         'You have successfully registered! To log in to your account, please check your email. You should have received an email with instructions on how to activate your account.'
 
       dispatch(clearSuccess())
-      dispatch(clearGeo())
 
       navigate('/login/', {
         state: {
