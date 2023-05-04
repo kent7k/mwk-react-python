@@ -1,22 +1,29 @@
 {% load i18n %}
 
 {% block subject %}
-{% blocktrans %}Registration Confirmation{% endblocktrans %}
+  {% blocktrans %}Registration Confirmation{% endblocktrans %}
 {% endblock subject %}
 
 {% block text_body %}
-Congratulations on registering for {{sitename}}.
-{{url}}
+  {% blocktrans with sitename=sitename url=url %}
+    Congratulations on registering for {{sitename}}.
+    Please follow the link below to complete your registration:
+    {{url}}
+  {% endblocktrans %}
 
-{% trans "Thank you for using our website!" %}
+  {% trans "Thank you for using our website!" %}
 {% endblock text_body %}
 
 {% block html_body %}
-<p>{% blocktrans %}You received this email because you need to complete the registration process{% endblocktrans %}</p>
+  <p>
+    {% blocktrans %}
+      You received this email because you need to complete the registration process.
+      Please follow the link below to complete your registration on {{sitename}}:
+    {% endblocktrans %}
+  </p>
+  <p>
+    <a href="{{url}}">{{url}}</a>
+  </p>
 
-<p>Follow this link to complete your registration on {{sitename}}:</p>
-<a href="{{url}}">{{url}}</a>
-
-<p>{% trans "Thank you for using our website!" %}</p>
-
+  <p>{% trans "Thank you for using our website!" %}</p>
 {% endblock html_body %}
