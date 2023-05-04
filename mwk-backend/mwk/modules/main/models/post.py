@@ -61,9 +61,9 @@ class Post(models.Model):
     def like(self, user: User) -> bool:
         """Like/dislike post, returns True if like false otherwise"""
 
-        is_like = self.liked.filter(id=user.id).exists()
+        is_liked = self.liked.filter(id=user.id).exists()
 
-        if is_like:
+        if is_liked:
             self.liked.remove(user)
             return False
 

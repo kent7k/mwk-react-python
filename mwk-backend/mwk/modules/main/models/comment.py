@@ -58,9 +58,9 @@ class Comment(MPTTModel):
         Like or dislike the comment and return True if it was liked, False otherwise.
         """
 
-        is_like = self.liked.filter(id=user.id).exists()
+        is_liked = self.liked.filter(id=user.id).exists()
 
-        if is_like:
+        if is_liked:
             self.liked.remove(user)
             return False
 

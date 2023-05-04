@@ -8,28 +8,14 @@ from rest_framework import serializers
 class AuthorSerializer(serializers.ModelSerializer):
     """Serializer for representing the author's data"""
 
-    avatar = serializers.SerializerMethodField()
-
-    def get_avatar(self, obj):
-        return serializers.ImageField(source='profile.avatar').to_representation(obj)
+    avatar = serializers.ImageField(source='profile.avatar')
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'avatar']
 
 
-@extend_schema_field(
-    {
-        'type': 'string',
-        'format': 'string',
-        'read_only': True,
-        'example': {
-            'first_name': 'string',
-            'last_name': 'string',
-            'avatar': 'string',
-        },
-    }
-)
+@extend_schema_field(AuthorSerializer)
 class CurrentAuthorField(serializers.Field):
     """
     Field for representing the author's data, requires the User object as input and returns the data for it.
@@ -43,14 +29,10 @@ class CurrentAuthorField(serializers.Field):
 
     def to_representation(self, value: User) -> dict:
         """To JSON"""
-
-        return AuthorSerializer(
-            instance=value, context={'request': self.context.get('request')}
-        ).data
+        return AuthorSerializer(instance=value, context=self.context).data
 
     def to_internal_value(self, data: T) -> T:
         """From JSON"""
-
         return data
 
 
@@ -59,26 +41,18 @@ class DateTimeTimezoneField(serializers.DateTimeField):
 
     def default_timezone(self):
         request = self.context.get('request')
-
-        if request:
-            return request.timezone
-        return super().default_timezone()
+        return request.timezone if request else super().default_timezone()
 
 
-@extend_schema_field(
-    {
-        'type': 'string',
-        'format': 'string',
-    }
-)
+@extend_schema_field(serializers.PrimaryKeyRelatedField)
 class PostCategoryField(serializers.PrimaryKeyRelatedField):
     """Read-write field for PostCategory.
     Provides the str_representation of the PostCategory object as output and accepts a category PK as input"""
 
+    def to_representation(self, value):
+        """To JSON"""
+        return str(value)
+
     def use_pk_only_optimization(self):
         return False
 
-    def to_representation(self, value):
-        """To JSON"""
-
-        return str(value)

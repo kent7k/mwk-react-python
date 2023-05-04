@@ -18,7 +18,6 @@ from mwk.modules.main.services.get_post_categories import get_post_categories
 
 
 class PostViewSet(AuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):
-
     serializer_class = PostSerializer
     comments_serializer_class = CommentSerializer
     categories_serializer_class = PostCategorySerializer
@@ -41,7 +40,11 @@ class PostViewSet(AuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):
     @staticmethod
     def validate_post_filters(filters: dict) -> None:
         if all(filters.get(key) for key in ('is_popular', 'is_interesting')):
-            raise ValidationError({'error': _('Sorting by both "interesting" and "popular" fields may result in ambiguous results.')}, code='invalid_filters')
+            raise ValidationError(
+                {'error': _(
+                    'Sorting by both "interesting" and "popular" fields may result in ambiguous results.'
+                    )}, code='invalid_filters'
+                )
 
     def list(self, request, *args, **kwargs):
         query = request.GET
@@ -54,7 +57,7 @@ class PostViewSet(AuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['get'], serializer_class=CommentSerializer)
+    @action(detail=True, methods=['get'], serializer_class=CommentSerializer, url_path='comments')
     def get_all_comments(self, request, pk: int = None) -> Response:
         """Get comments for a post"""
 
@@ -70,16 +73,15 @@ class PostViewSet(AuthorPermissionsMixin, CacheTreeQuerysetMixin, ModelViewSet):
 
     @action(detail=False, methods=['put'])
     def like_post(self, request) -> Response:
+        post_id = request.data.get('post')
 
-        pk = request.data.get('post')
-
-        if not pk:
+        if not post_id:
             raise ValidationError({'post': _('This field is required.')})
 
-        post = get_object_or_404(Post, pk=pk)
+        post = get_object_or_404(Post, pk=post_id)
 
-        is_like = post.like(request.user)
-        like_action = 'add' if is_like else 'remove'
+        is_liked = post.like(request.user)
+        like_action = 'add' if is_liked else 'remove'
 
         return Response({'action': like_action})
 
