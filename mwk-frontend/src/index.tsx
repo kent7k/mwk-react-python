@@ -24,7 +24,7 @@ const routes = [
     component: <Page404 />,
   },
   {
-    path: '/',
+    path: '/register/',
     component: <Register />,
     protection: <AnonymousProtectedRoute />,
   },

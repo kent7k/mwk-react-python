@@ -73,7 +73,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       disabled={!isLoad}
       sx={{ mb: 2 }}
       onClick={() => {
-        navigate('/')
+        navigate('/register/')
       }}
       variant="contained"
     >
