@@ -50,8 +50,8 @@ class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers
             'password': {'write_only': True, 'validators': [validate_password]},
             'is_active': {'read_only': True},
             'username': {'max_length': 50, 'min_length': 4},
-            'first_name': {'required': True, 'allow_blank': False, 'max_length': 30},
-            'last_name': {'required': True, 'allow_blank': False, 'max_length': 30},
+            'first_name': {'required': False, 'allow_blank': False, 'max_length': 30},
+            'last_name': {'required': False, 'allow_blank': False, 'max_length': 30},
         }
 
     def validate(self, attrs: dict):
