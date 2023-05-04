@@ -78,7 +78,8 @@ class AuthenticationTestCase(APITestCase):
         user: User = users.first()
 
         self.assertTrue(Profile.objects.filter(user=user).exists())
-        self.assertFalse(user.is_active)
+        # TODO: If activation mail is sent, this will be assertFalse
+        self.assertTrue(user.is_active)
 
         avatar_url = f'http://testserver{user.profile.avatar.url}'
         self.assertEqual(
