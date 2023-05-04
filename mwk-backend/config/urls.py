@@ -5,15 +5,15 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-urlpatterns = [
-    # Admin password reset
+# Admin password reset URL patterns
+password_reset_patterns = [
     path(
-        'admin/password_reset/',
+        'password_reset/',
         auth_views.PasswordResetView.as_view(),
         name='admin_password_reset',
     ),
     path(
-        'admin/password_reset/done/',
+        'password_reset/done/',
         auth_views.PasswordResetDoneView.as_view(),
         name='password_reset_done',
     ),
@@ -27,6 +27,22 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name='password_reset_complete',
     ),
+]
+
+# Documentation URL patterns
+documentation_patterns = [
+    path('schema/', SpectacularAPIView.as_view(), name='docs_schema'),
+    path(
+        'swagger/',
+        SpectacularSwaggerView.as_view(url_name='docs_schema'),
+        name='docs_swagger-ui',
+    ),
+]
+
+# Main URL patterns
+urlpatterns = [
+    # Admin password reset
+    path('admin/', include(password_reset_patterns)),
     # Admin
     path('admin/', admin.site.urls),
     # Debug Toolbar
@@ -36,12 +52,7 @@ urlpatterns = [
     path('feed/', include('mwk.modules.main.urls')),
     path('peoples/', include('mwk.modules.profiles.urls')),
     # Documentation
-    path('docs/schema/', SpectacularAPIView.as_view(), name='docs_schema'),
-    path(
-        'docs/swagger/',
-        SpectacularSwaggerView.as_view(url_name='docs_schema'),
-        name='docs_swagger-ui',
-    ),
+    path('docs/', include(documentation_patterns)),
 ]
 
 if settings.DEBUG:
