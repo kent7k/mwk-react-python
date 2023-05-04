@@ -6,6 +6,6 @@ from mwk.modules.authentication.services.update_user_profile import update_user_
 
 @transaction.atomic
 def register_user(user_data: dict, password: str, profile_data: dict) -> User:
-    user = User.objects.create_user(**user_data, password=password, is_active=False)
+    user = User.objects.create_user(**user_data, password=password, is_active=True)
     update_user_profile(profile_data, user)
     return user

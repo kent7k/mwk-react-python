@@ -87,7 +87,8 @@ class AuthenticationTestCase(APITestCase):
                 'username': data.get('username'),
                 'first_name': data.get('first_name'),
                 'last_name': data.get('last_name'),
-                'is_active': False,
+                # TODO: If activation mail is sent, this will be False
+                'is_active': True,
                 'profile': {
                     'avatar': avatar_url,
                     'birthday': data.get('profile').get('birthday'),
