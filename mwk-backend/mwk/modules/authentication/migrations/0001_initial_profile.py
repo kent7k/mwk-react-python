@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
                     models.ImageField(
                         blank=True,
                         default='default/default.png',
-                        upload_to=mwk.modules.main.helpers.helpers.PathAndRenameDate(
+                        upload_to=mwk.modules.main.helpers.helpers.PathWithDateAndUUID(
                             'photos/avatars/'
                         ),
                         verbose_name='Avatar',

@@ -9,7 +9,7 @@ from rest_framework.test import APITestCase
 
 from mwk.modules.main.models.post_category import PostCategory
 from mwk.modules.main.models.post import Post
-from mwk.modules.main.services.get_posts import get_posts as get_posts_queryset
+from mwk.modules.main.services.get_all_posts import get_all_posts as get_posts_queryset
 
 
 class PostsTestCase(APITestCase):
@@ -44,7 +44,7 @@ class PostsTestCase(APITestCase):
             post.created_at = timezone.now() + timedelta(minutes=i)
             post.save()
 
-    def get_posts(self, page_size: int = api_settings.PAGE_SIZE):
+    def get_all_posts(self, page_size: int = api_settings.PAGE_SIZE):
         """Create posts and return ready queryset"""
 
         self.create_posts(page_size)
@@ -69,8 +69,8 @@ class PostsTestCase(APITestCase):
 
         posts[1].like(user)
 
-        posts = posts.annotate(liked_cnt=Count('liked')).order_by(
-            '-liked_cnt', '-created_at'
+        posts = posts.annotate(liked_count=Count('liked')).order_by(
+            '-liked_count', '-created_at'
         )
 
         return posts
@@ -98,8 +98,8 @@ class PostsTestCase(APITestCase):
         posts[2].like(user)
         posts[1].like(user)
 
-        posts = posts.annotate(liked_cnt=Count('liked')).order_by(
-            '-liked_cnt', ordering
+        posts = posts.annotate(liked_count=Count('liked')).order_by(
+            '-liked_count', ordering
         )
 
         return posts
@@ -130,7 +130,7 @@ class PostsTestCase(APITestCase):
     ):
         """Get filtered by category posts with ORDER_BY=ordering"""
 
-        posts = self.get_posts()
+        posts = self.get_all_posts()
 
         post = posts[1]
         post_two = posts[2]

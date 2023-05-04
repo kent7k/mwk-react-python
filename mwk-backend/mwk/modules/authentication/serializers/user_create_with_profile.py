@@ -7,10 +7,10 @@ from django.db.utils import IntegrityError
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
-from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
+from mwk.modules.main.mixins.error_messages_serializers_mixin import ErrorMessagesSerializersMixin
 
 from mwk.modules.authentication.helpers import contains_digits, is_age_at_least
-from mwk.modules.authentication.services import register_user
+from mwk.modules.authentication.services.register_user import register_user
 from mwk.modules.authentication.serializers.profile_create import ProfileCreateSerializer
 
 
@@ -54,21 +54,19 @@ class UserCreateWithProfileSerializer(ErrorMessagesSerializersMixin, serializers
             'last_name': {'required': True, 'allow_blank': False, 'max_length': 30},
         }
 
-    def validate_names(self, username: str, first_name: str, last_name: str) -> None:
-        if username.isdigit():
-            self.fail('username_contains_only_digits')
-        if contains_digits(first_name):
-            self.fail('first_name_contains_digits')
-        if contains_digits(last_name):
-            self.fail('last_name_contains_digits')
-
     def validate(self, attrs: dict):
         username, first_name, last_name = (
             attrs.get('username'),
             attrs.get('first_name'),
             attrs.get('last_name'),
         )
-        self.validate_names(username, first_name, last_name)
+
+        if username.isdigit():
+            self.fail('username_contains_only_digits')
+        if contains_digits(first_name):
+            self.fail('first_name_contains_digits')
+        if contains_digits(last_name):
+            self.fail('last_name_contains_digits')
         return super().validate(attrs)
 
     def create(self, validated_data: OrderedDict) -> Union[User, None]:

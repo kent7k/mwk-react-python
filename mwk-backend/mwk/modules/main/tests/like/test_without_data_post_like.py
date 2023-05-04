@@ -36,6 +36,6 @@ class LikeTestCase(APITestCase):
     def test_without_data_post_like(self):
         """Test that posting a like without data returns a 400 error."""
         url = reverse('like')
-        response = self.client.put(url, {})
+        response = self.client.put(url, {'post': ''})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

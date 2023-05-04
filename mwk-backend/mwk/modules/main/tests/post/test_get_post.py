@@ -8,7 +8,7 @@ from rest_framework.test import APITestCase
 
 from mwk.modules.main.models.post import Post
 from mwk.modules.main.serializers.post import PostSerializer
-from mwk.modules.main.services.get_posts import get_posts
+from mwk.modules.main.services.get_all_posts import get_all_posts
 
 
 class PostsTestCase(APITestCase):
@@ -37,7 +37,7 @@ class PostsTestCase(APITestCase):
 
     def get_posts_queryset(self, page_size):
         self.create_posts(page_size)
-        return get_posts(self.user)
+        return get_all_posts(self.user)
 
     def test_get_post(self):
         posts = self.get_posts_queryset(3)

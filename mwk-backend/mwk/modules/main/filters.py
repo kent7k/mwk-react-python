@@ -8,6 +8,7 @@ from mwk.modules.main.models.post import Post
 
 
 class PostFilter(filters.FilterSet):
+    T = TypeVar('T')
 
     CHOICES = (
         ('created_at', 'Oldest first'),
@@ -16,26 +17,20 @@ class PostFilter(filters.FilterSet):
 
     is_interesting = filters.BooleanFilter(
         method='filter_interesting',
-        distinct=True,
-        widget=CheckboxInput(
-            attrs={'class': 'filter', 'id': 'radio1', 'checked': False}
-        ),
+        widget=CheckboxInput(attrs={'class': 'filter', 'id': 'radio1'}),
         label='Interesting',
     )
 
     is_popular = filters.BooleanFilter(
         method='filter_popular',
-        distinct=True,
-        widget=CheckboxInput(
-            attrs={'class': 'filter', 'id': 'radio2', 'checked': False}
-        ),
+        widget=CheckboxInput(attrs={'class': 'filter', 'id': 'radio2'}),
         label='Popular',
     )
 
-    ordering = filters.ChoiceFilter(
+    date_ordering = filters.ChoiceFilter(
         choices=CHOICES,
         method='ordering_filter',
-        widget=Select(attrs={'class': 'filter', 'id': 'ordering'}),
+        widget=Select(attrs={'class': 'filter', 'id': 'date_ordering'}),
         label='By date',
     )
 
@@ -43,50 +38,32 @@ class PostFilter(filters.FilterSet):
         model = Post
         fields = ['category']
 
-    T = TypeVar('T')
-
-    def annotate_by_interesting(self, queryset: T) -> T:
-        """Will return a QuerySet annotated with is_interesting"""
+    def filter_interesting(self, queryset: T, name: str, value: bool) -> T:
+        """Filter QuerySet by user.profile.following posts."""
+        if not value:
+            return queryset
 
         following = self.request.user.profile.following
         return queryset.annotate(
             is_interesting=Exists(following.filter(id=OuterRef('author__profile__id')))
-        )
+        ).order_by('-is_interesting', '-created_at')
 
-    def annotate_by_liked_cnt(self, queryset: T) -> T:
-        """Annotate QuerySet with liked_cnt."""
+    def filter_popular(self, queryset: T, name: str, value: bool) -> T:
+        """Filter QuerySet by likes count."""
+        if not value:
+            return queryset
 
-        return queryset.annotate(liked_cnt=Count('liked'))
+        return queryset.annotate(
+            liked_count=Count('liked')
+        ).order_by('-liked_count', '-created_at')
 
     def ordering_filter(self, queryset: T, name: str, value: str) -> T:
         """Order QuerySet by created_at."""
 
         if self.data.get('is_interesting'):
-            return self.annotate_by_interesting(queryset).order_by(
-                '-is_interesting', value
-            )
+            queryset = self.filter_interesting(queryset, name, True)
 
         if self.data.get('is_popular'):
-            return self.annotate_by_liked_cnt(queryset).order_by('-liked_cnt', value)
+            queryset = self.filter_popular(queryset, name, True)
 
         return queryset.order_by(value)
-
-    def filter_interesting(self, queryset: T, name: str, value: bool) -> T:
-        """Filter QuerySet by user.profile.following posts."""
-
-        if not value:
-            return queryset
-
-        return self.annotate_by_interesting(queryset).order_by(
-            '-is_interesting', '-created_at'
-        )
-
-    def filter_popular(self, queryset, name: str, value: bool):
-        """Order QuerySet by likes count."""
-
-        if not value:
-            return queryset
-
-        return self.annotate_by_liked_cnt(queryset).order_by(
-            '-liked_cnt', '-created_at'
-        )

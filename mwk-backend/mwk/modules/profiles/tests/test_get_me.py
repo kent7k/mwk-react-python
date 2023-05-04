@@ -34,7 +34,7 @@ class ProfileTests(APITestCase):
     def authenticate(self, token: str) -> None:
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
 
-    def setup_user_profile(self, user: User) -> Profile:
+    def update_user_profile(self, user: User) -> Profile:
         """Fill in the profile with test data"""
         user.profile.birthday = self.birthday
         user.profile.save()
@@ -43,7 +43,7 @@ class ProfileTests(APITestCase):
     def create_profiles(self) -> list[Profile]:
         page_size = api_settings.PAGE_SIZE
         profiles = [
-            self.setup_user_profile(
+            self.update_user_profile(
                 User.objects.create_user(
                     'ProfilesTestCaseGetProfiles' + str(i),
                     'profilestestcasegetprofiles@gmail.com',
@@ -59,7 +59,7 @@ class ProfileTests(APITestCase):
         """Test getting self profile"""
         url = reverse('profile_details')
         self.authenticate(self.token)
-        profile = self.setup_user_profile(self.user)
+        profile = self.update_user_profile(self.user)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

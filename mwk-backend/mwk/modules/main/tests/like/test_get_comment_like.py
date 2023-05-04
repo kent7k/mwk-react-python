@@ -38,7 +38,7 @@ class LikeTestCase(APITestCase):
     def test_get_comment_like(self):
         """Test to check GET request on the comment like return HTTP 405"""
 
-        url = reverse('like_comment')
+        url = reverse('like_post_comment')
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

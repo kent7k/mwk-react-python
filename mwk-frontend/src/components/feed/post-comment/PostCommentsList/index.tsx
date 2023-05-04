@@ -29,12 +29,12 @@ export const PostCommentsList = () => {
               username: `${comment.author.first_name} ${comment.author.last_name}`,
               text: comment.body,
               timesince: getTimeInfo(comment.created_at).join(' at '),
-              likesCount: comment.like_cnt,
+              likesCount: comment.liked_count,
               avatarAlt: comment.author.first_name,
               avatarSrc: comment.author.avatar,
               isLiked: comment.is_user_liked_comment,
               replies: comment.replies,
-              repliesCnt: comment.replies_cnt - comment.replies.length,
+              repliesCnt: comment.replies_count - comment.replies.length,
             })
 
             return (

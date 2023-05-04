@@ -54,7 +54,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_with_bad_email(self):
         """A test that tries to register with bad email"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data['email'] = 'blablalb'
 

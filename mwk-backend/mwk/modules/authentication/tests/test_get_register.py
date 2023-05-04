@@ -43,6 +43,6 @@ class AuthenticationTestCase(APITestCase):
 
     def test_get_register_returns_405(self):
         """Verify that a GET request to register returns a 405 error"""
-        url = reverse('reg')
+        url = reverse('register')
         response = self.client.get(url, data=self.register_data)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

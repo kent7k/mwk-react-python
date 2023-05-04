@@ -41,7 +41,7 @@ class LikeTestCase(APITestCase):
         """Test that an unauthorized user cannot like or unlike a comment"""
 
         self.client.credentials()
-        url = reverse('like_comment')
+        url = reverse('like_post_comment')
         data = {'comment_id': self.comment.id}
         response = self.client.put(url, data)
 

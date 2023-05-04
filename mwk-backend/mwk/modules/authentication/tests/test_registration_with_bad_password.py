@@ -53,7 +53,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_with_bad_password(self):
         """A test that tries to register with bad password"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data['password'] = 'asd1233'
 

@@ -58,7 +58,7 @@ class AuthenticationTestCase(APITestCase):
         give the user a default avatar
         """
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data['profile']['avatar'] = None
 

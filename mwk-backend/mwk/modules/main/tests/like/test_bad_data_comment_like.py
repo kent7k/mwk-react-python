@@ -38,7 +38,7 @@ class LikeTestCase(APITestCase):
     def test_bad_data_comment_like(self):
         """Test that like comment endpoint returns errors for bad data"""
 
-        url = reverse('like_comment')
+        url = reverse('like_post_comment')
         data = {'comment': 245}
         response = self.client.put(url, data)
 

@@ -11,9 +11,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
 
     def get_avatar(self, obj):
-        field = serializers.ImageField()
-        field.bind('avatar', self)
-        return field.to_representation(obj.profile.avatar)
+        return serializers.ImageField(source='profile.avatar').to_representation(obj)
 
     class Meta:
         model = User

@@ -46,7 +46,7 @@ class Comment(MPTTModel):
         return f'Comment {self.pk}'
 
     @property
-    def replies_cnt(self) -> int:
+    def replies_count(self) -> int:
         """
         Count the number of comment replies.
         """

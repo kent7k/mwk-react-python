@@ -6,20 +6,18 @@ from rest_framework import serializers
 
 from mwk.modules.main.fields import CurrentAuthorField, DateTimeTimezoneField, PostCategoryField
 from mwk.modules.main.helpers.helpers import validate_images
-from mwk.modules.main.mixins import ErrorMessagesSerializersMixin
+from mwk.modules.main.mixins.error_messages_serializers_mixin import ErrorMessagesSerializersMixin
 from mwk.modules.main.models.comment import Comment
-from mwk.modules.main.models.image import Image
-from mwk.modules.main.models.post_category import PostCategory
-from mwk.modules.main.models.post import Post
 
-from mwk.modules.main.services import create_comment_images, create_post_images
+
+from mwk.modules.main.services.add_images_to_comment import add_images_to_comment
 from mwk.modules.main.serializers.image import ImageSerializer
 
 
 class CommentSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializer):
     is_user_liked_comment = serializers.BooleanField(read_only=True)
-    like_cnt = serializers.IntegerField(read_only=True, default=0)
-    replies_cnt = serializers.IntegerField(read_only=True)
+    liked_count = serializers.IntegerField(read_only=True, default=0)
+    replies_count = serializers.IntegerField(read_only=True)
     images = ImageSerializer(many=True, read_only=True, source='images_comment')
     author = CurrentAuthorField(default=serializers.CurrentUserDefault())
     replies = serializers.SerializerMethodField(read_only=True)
@@ -101,7 +99,7 @@ class CommentSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializ
         """
 
         author = self.context.get('request').user
-        create_comment_images(images, comment_id, author)
+        add_images_to_comment(images, comment_id, author)
 
     def create(self, validated_data: dict) -> Comment:
         instance = super().create(validated_data)
@@ -121,9 +119,9 @@ class CommentSerializer(ErrorMessagesSerializersMixin, serializers.ModelSerializ
             'body',
             'is_user_liked_comment',
             'replies',
-            'like_cnt',
+            'liked_count',
             'images',
             'author',
-            'replies_cnt',
+            'replies_count',
         ]
         extra_kwargs = {'body': {'required': False}}

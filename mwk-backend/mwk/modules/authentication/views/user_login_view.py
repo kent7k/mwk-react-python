@@ -10,7 +10,7 @@ from drf_spectacular.utils import extend_schema
 
 from mwk.modules.authentication.permissions import Authenticated
 from mwk.modules.authentication.serializers.knox_token import KnoxTokenSerializer
-from mwk.modules.authentication.services.create_authtoken import create_authtoken
+from mwk.modules.authentication.services.generate_token import generate_token
 
 
 class UserLoginAPIView(LoginView):
@@ -32,6 +32,7 @@ class UserLoginAPIView(LoginView):
             'token': token,
             'user': UserSerializer(user, context=self.get_context()).data if UserSerializer else None,
         }
+
         return data
 
     @extend_schema(request=KnoxTokenSerializer, responses=KnoxTokenSerializer)
@@ -40,7 +41,7 @@ class UserLoginAPIView(LoginView):
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data['user']
-        token_data = create_authtoken(
+        token_data = generate_token(
             request,
             user,
             self.get_token_limit_per_user(),

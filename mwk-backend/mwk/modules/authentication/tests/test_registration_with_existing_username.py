@@ -54,7 +54,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_with_existing_username(self):
         """A test that tries to register with already existing username"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data['username'] = self.user.username
 

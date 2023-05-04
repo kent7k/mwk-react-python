@@ -85,12 +85,12 @@ class ContactAdmin(admin.ModelAdmin):
         return f'{user.first_name} {user.last_name}'
 
     def user_from_get_full_name(self, obj: Contact) -> str:
-        return self.get_full_name(obj.user_from.user)
+        return obj.user_from.user.get_full_name()
 
     user_from_get_full_name.short_description = 'From'
 
-    def user_to_get_full_name(self, obj: Contact):
-        return self.get_full_name(obj.user_to.user)
+    def user_to_get_full_name(self, obj: Contact) -> str:
+        return obj.user_to.user.get_full_name()
 
     user_to_get_full_name.short_description = 'To'
 

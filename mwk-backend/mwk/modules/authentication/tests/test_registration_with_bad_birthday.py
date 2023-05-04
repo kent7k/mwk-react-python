@@ -54,7 +54,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_with_bad_birthday(self):
         """Test register with invalid birthday"""
 
-        url = reverse('reg')
+        url = reverse('register')
 
         data = copy.deepcopy(self.register_data)
         data['profile']['birthday'] = 'alajhdeu'

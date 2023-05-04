@@ -54,7 +54,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_with_bad_first_name(self):
         """Test register with bad first_name"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data['first_name'] = ascii_letters
 

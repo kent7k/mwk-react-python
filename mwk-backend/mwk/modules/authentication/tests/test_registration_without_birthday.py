@@ -53,7 +53,7 @@ class AuthenticationTestCase(APITestCase):
     def test_registration_without_birthday(self):
         """A test that tries to register without birthday"""
 
-        url = reverse('reg')
+        url = reverse('register')
         data = copy.deepcopy(self.register_data)
         data['profile'].pop('birthday')
 

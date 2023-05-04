@@ -4,4 +4,8 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 
 class KnoxTokenSerializer(AuthTokenSerializer):
-    expiry = serializers.DateTimeField(read_only=True, label=_('Expiry'))
+    expiry = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        extra_kwargs = {'expiry': {'label': _('Expiry')}}
+

@@ -30,7 +30,7 @@ urlpatterns = [
         '<int:pk>/comments/',
         PostViewSet.as_view(
             {
-                'get': 'get_comments',
+                'get': 'get_all_comments',
             }
         ),
         name='post_comments',
@@ -76,7 +76,7 @@ urlpatterns = [
         'comment/<int:pk>/descendants/',
         CommentViewSet.as_view(
             {
-                'get': 'get_descendants',
+                'get': 'get_comment_replies',
             }
         ),
     ),
@@ -84,9 +84,9 @@ urlpatterns = [
         'comment/like/',
         CommentViewSet.as_view(
             {
-                'put': 'like_comment'
+                'put': 'like_post_comment'
             }
         ),
-        name='like_comment',
+        name='like_post_comment',
     ),
 ]

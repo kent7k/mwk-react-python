@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 
-from mwk.modules.main.helpers.helpers import PathAndRenameDate
+from mwk.modules.main.helpers.helpers import PathWithDateAndUUID
 
 
 class Profile(models.Model):
@@ -31,7 +31,7 @@ class Profile(models.Model):
         verbose_name='Avatar',
         blank=True,
         null=True,
-        upload_to=PathAndRenameDate('photos/avatars/'),
+        upload_to=PathWithDateAndUUID('photos/avatars/'),
     )
 
     followers = models.ManyToManyField(

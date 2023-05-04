@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from mwk.modules.main.helpers.helpers import PathAndRenameDate
+from mwk.modules.main.helpers.helpers import PathWithDateAndUUID
 
 
 class Image(models.Model):
@@ -28,7 +28,7 @@ class Image(models.Model):
         blank=True,
     )
     photo = models.ImageField(
-        verbose_name='Photo', upload_to=PathAndRenameDate('photos/posts/')
+        verbose_name='Photo', upload_to=PathWithDateAndUUID('photos/posts/')
     )
     author = models.ForeignKey(User, verbose_name='Author', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Creation date')

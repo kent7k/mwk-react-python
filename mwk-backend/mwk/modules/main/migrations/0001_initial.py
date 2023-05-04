@@ -36,15 +36,10 @@ class Migration(migrations.Migration):
                 ),
                 (
                     'content',
-                    models.TextField(blank=True, verbose_name='Post Text')
-                ),
-                (
-                    'created_at',
-                    models.DateTimeField(auto_now_add=True, verbose_name='Created at'),
-                ),
-                (
-                    'updated_at',
-                    models.DateTimeField(auto_now=True, verbose_name='Last updated'),
+                    models.TextField(
+                        blank=True,
+                        verbose_name='Post Text'
+                    )
                 ),
                 (
                     'author',
@@ -52,16 +47,6 @@ class Migration(migrations.Migration):
                         on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                         verbose_name='Author',
-                    ),
-                ),
-                (
-                    'viewers',
-                    models.ManyToManyField(
-                        blank=True,
-                        related_name='viewed_posts',
-                        related_query_name='viewed_posts',
-                        to=settings.AUTH_USER_MODEL,
-                        verbose_name='Viewers',
                     ),
                 ),
                 (
@@ -75,6 +60,16 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
+                    'viewers',
+                    models.ManyToManyField(
+                        blank=True,
+                        related_name='viewed_posts',
+                        related_query_name='viewed_posts',
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name='Viewers',
+                    ),
+                ),
+                (
                     'profile',
                     models.ForeignKey(
                         null=True,
@@ -84,7 +79,15 @@ class Migration(migrations.Migration):
                         to='authentication.profile',
                         verbose_name='Profile',
                     ),
-                )
+                ),
+                (
+                    'updated_at',
+                    models.DateTimeField(auto_now=True, verbose_name='Last updated'),
+                ),
+                (
+                    'created_at',
+                    models.DateTimeField(auto_now_add=True, verbose_name='Created at'),
+                ),
             ],
             options={
                 'ordering': ('-created_at',),

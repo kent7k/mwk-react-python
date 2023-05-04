@@ -9,23 +9,30 @@ from mwk.modules.main.models.post import Post
 T = TypeVar('T')
 
 
-def get_posts(user: User) -> list[Post]:
-    """Get posts queryset"""
-
-    posts = (
-        Post.objects.annotate(
+def get_all_posts(user: User) -> list[Post]:
+    def annotate_with_counts(queryset):
+        return queryset.annotate(
             viewers_count=Count('viewers', distinct=True),
             liked_count=Count('liked', distinct=True),
             comments_count=Count('comments', distinct=True),
+        )
+
+    def author_in_user_following(queryset):
+        return queryset.annotate(
             author_in_user_following=Exists(
                 user.profile.following.filter(id=OuterRef('author__profile__id'))
             ),
-            is_user_liked_post=Exists(user.liked_posts.filter(id=OuterRef('id'))),
         )
-        .select_related('author__profile', 'category')
-        .prefetch_related('images')
-        .order_by('-created_at')
+
+    posts = (
+        Post.objects
+            .all()
+            .select_related('author__profile', 'category')
+            .prefetch_related('images')
+            .order_by('-created_at')
     )
 
-    return posts
+    posts = annotate_with_counts(posts)
+    posts = author_in_user_following(posts)
 
+    return posts
