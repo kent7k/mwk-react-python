@@ -10,10 +10,10 @@ import {
 } from '../../../store/slices/authentication/userSlice'
 import { Page404 } from '../../pages/Page404'
 
-import { RegisterFormStepFour } from './RegisterFormStepFour'
+// import { RegisterFormStepFour } from './RegisterFormStepFour'
 import { RegisterFormStepOne } from './RegisterFormStepOne'
-import { RegisterFormStepThree } from './RegisterFormStepThree'
-import { RegisterFormStepTwo } from './RegisterFormStepTwo'
+// import { RegisterFormStepThree } from './RegisterFormStepThree'
+// import { RegisterFormStepTwo } from './RegisterFormStepTwo'
 
 export const Register = () => {
   const [step, setStep] = useState(1)
@@ -23,7 +23,7 @@ export const Register = () => {
   const { success } = useSelector((state: any) => state.user)
 
   const navigate = useNavigate()
-  const lastStep = 4
+  const lastStep = 1
 
   const handleSubmit = (data) => {
     dispatch(userRegister(data))
@@ -73,24 +73,24 @@ export const Register = () => {
 
   const steps = {
     1: <RegisterFormStepOne title="APP" {...generalRegisterProps} />,
-    2: (
-      <RegisterFormStepTwo
-        title="How should we address you?"
-        {...generalRegisterProps}
-      />
-    ),
-    3: (
-      <RegisterFormStepThree
-        title="Set up your profile"
-        {...generalRegisterProps}
-      />
-    ),
-    4: (
-      <RegisterFormStepFour
-        title="Choose a profile photo"
-        {...generalRegisterProps}
-      />
-    ),
+    // 2: (
+    //   <RegisterFormStepTwo
+    //     title="How should we address you?"
+    //     {...generalRegisterProps}
+    //   />
+    // ),
+    // 3: (
+    //   <RegisterFormStepThree
+    //     title="Set up your profile"
+    //     {...generalRegisterProps}
+    //   />
+    // ),
+    // 4: (
+    //   <RegisterFormStepFour
+    //     title="Choose a profile photo"
+    //     {...generalRegisterProps}
+    //   />
+    // ),
   }
 
   return steps[step] ? steps[step] : <Page404 />

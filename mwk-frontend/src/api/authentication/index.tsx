@@ -6,7 +6,7 @@ const baseUrl = process.env.REACT_APP_BACKEND_URL
  * API for the authentication part
  */
 export default class AuthAPI {
-  static registerEndpoint = `${baseUrl}/`
+  static registerEndpoint = `${baseUrl}/register/`
 
   static loginEndpoint = `${baseUrl}/login/`
 
