@@ -53,7 +53,7 @@ module.exports = {
       },
     ],
     'no-return-assign': OFF,
-    'no-console': ERROR,
+    'no-console': OFF,
     'import/no-extraneous-dependencies': [
       'error',
       {
