@@ -7,7 +7,7 @@ class Contact(models.Model):
     user_to = models.ForeignKey(
         Profile, related_name='to_set',
         on_delete=models.CASCADE,
-        verbose_name='На'
+        verbose_name='To'
     )
     user_from = models.ForeignKey(
         Profile,
@@ -21,18 +21,14 @@ class Contact(models.Model):
         verbose_name='Created at'
     )
 
-    def __str__(self) -> str:
-        return '{} Subscribed to {}'.format(self.user_from, self.user_to)
+    def __str__(self):
+        return f'{self.user_from} Subscribed to {self.user_to}'
 
     class Meta:
         ordering = ('-created_at',)
-        verbose_name = 'Subscription'
-        verbose_name_plural = 'Subscriptions'
+        verbose_name_plural = verbose_name = 'Subscription'
         constraints = [
             models.CheckConstraint(
-                check=~models.Q(
-                    user_from=models.F('user_to')
-                ),  # Prohibits subscribing to yourself
-                name='check_self_follow',
+                check=~models.Q(user_from=models.F('user_to')), name='check_self_follow',
             )
         ]

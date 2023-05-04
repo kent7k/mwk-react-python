@@ -48,5 +48,5 @@ class ProfileCreateSerializer(
         model = Profile
         fields = ['avatar', 'birthday']
         extra_kwargs = {
-            'birthday': {'required': True, 'allow_null': False},
+            'birthday': {'required': False, 'allow_null': True},
         }

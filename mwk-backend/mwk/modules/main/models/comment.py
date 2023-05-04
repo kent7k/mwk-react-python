@@ -5,33 +5,32 @@ from mwk.modules.main.models.post import Post
 
 
 class Comment(MPTTModel):
-    """
-    MPTT-Model representing a comment.
-    """
-
     post = models.ForeignKey(
         Post,
-        related_name='comments',
-        related_query_name='comments',
         on_delete=models.CASCADE,
-        verbose_name='Post',
+        related_name='comments',
+        verbose_name='Post'
     )
     author = models.ForeignKey(
         User,
-        related_name='comments_author',
-        related_query_name='comments_author',
         on_delete=models.CASCADE,
-        verbose_name='Author',
+        related_name='comments_author',
+        verbose_name='Author'
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
-    updated_at = models.DateTimeField(auto_now=True, verbose_name='Last updated at')
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Created at'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Last updated at'
+    )
     body = models.TextField(verbose_name='Text')
     liked = models.ManyToManyField(
         User,
-        verbose_name='Liked by',
-        related_name='liked_comments',
-        related_query_name='liked_comments',
         blank=True,
+        related_name='liked_comments',
+        verbose_name='Liked by'
     )
     parent = TreeForeignKey(
         'self',
@@ -39,28 +38,22 @@ class Comment(MPTTModel):
         blank=True,
         null=True,
         related_name='replies',
-        verbose_name='Parent comment',
+        verbose_name='Parent comment'
     )
 
     def __str__(self) -> str:
+        """Return the string representation of the comment"""
         return f'Comment {self.pk}'
 
     @property
     def replies_count(self) -> int:
-        """
-        Count the number of comment replies.
-        """
-
         return self.get_descendant_count()
 
     def like(self, user: User) -> bool:
-        """
-        Like or dislike the comment and return True if it was liked, False otherwise.
-        """
+        """Like or dislike the comment and return True if it was liked, False otherwise."""
+        is_liked = self.liked.filter(id=user.id).exists()
 
-        is_like = self.liked.filter(id=user.id).exists()
-
-        if is_like:
+        if is_liked:
             self.liked.remove(user)
             return False
 

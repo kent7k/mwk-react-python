@@ -53,16 +53,17 @@ class Profile(models.Model):
         return reverse('profile', kwargs={'pk': self.pk})
 
     def follow(self, to_profile: 'Profile') -> bool:
-        """Follow/Unfollow to_profile, returns True if follow false otherwise"""
-
+        """
+        Follow or unfollow a profile. Returns True if followed, False otherwise.
+        """
         is_following = self.following.filter(id=to_profile.id).exists()
 
         if is_following:
             self.following.remove(to_profile)
-            return False
+        else:
+            self.following.add(to_profile)
 
-        self.following.add(to_profile)
-        return True
+        return not is_following
 
     class Meta:
         verbose_name = 'Profile'
