@@ -51,8 +51,6 @@ class AuthenticationTestCase(APITestCase):
         self.login_data = {'username': self.user.username, 'password': self.password}
 
     def test_registration_with_age_less_than_fourteen(self):
-        """Test register with age less than fourteen"""
-
         url = reverse('register')
 
         data = copy.deepcopy(self.register_data)

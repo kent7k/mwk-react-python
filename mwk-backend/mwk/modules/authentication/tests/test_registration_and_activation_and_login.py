@@ -55,15 +55,11 @@ class AuthenticationTestCase(APITestCase):
         self.login_data = {'username': self.user.username, 'password': self.password}
 
     def activate_user(self, token: str, uid: str) -> Response:
-        """Activate the user and return response"""
-
         url = reverse('activate', kwargs={'uid': uid, 'token': token})
         response = self.client.get(url)
-
         return response
 
     def test_registration_and_activation_and_login(self):
-        """A test that tries to register and activate user and then performs a login"""
 
         url = reverse('register')
         data = self.register_data
