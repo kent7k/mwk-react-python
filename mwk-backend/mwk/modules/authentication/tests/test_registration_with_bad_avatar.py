@@ -2,7 +2,6 @@ import copy
 import os
 from base64 import b64encode
 from datetime import datetime, timedelta
-from string import ascii_letters
 
 from django.conf import settings
 from django.contrib.auth.models import User
