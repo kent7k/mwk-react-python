@@ -1,0 +1,196 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "root",
+            "first_name": "",
+            "last_name": "",
+            "email": "user1@example.com",
+            "password": "8EsZDP9TYgHdUUM7C2N7Qqeici2ReTfNtBeQ",
+            "is_staff": true,
+            "is_active": true,
+            "is_superuser": true,
+            "last_login": "2023-05-05T00:00:00.000000Z",
+            "date_joined": "2023-05-05T00:00:00.000000Z"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "user2",
+            "first_name": "",
+            "last_name": "",
+            "email": "user2@example.com",
+            "password": "pbkdf2_sha256$150000$XXXXXXXXXXXXXXX",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2023-05-05T00:00:00.000000Z",
+            "date_joined": "2023-05-05T00:00:00.000000Z"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 4,
+        "fields": {
+            "username": "user3",
+            "first_name": "",
+            "last_name": "",
+            "email": "user3@example.com",
+            "password": "pbkdf2_sha256$150000$XXXXXXXXXXXXXXX",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2023-05-05T00:00:00.000000Z",
+            "date_joined": "2023-05-05T00:00:00.000000Z"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 5,
+        "fields": {
+            "username": "user4",
+            "first_name": "",
+            "last_name": "",
+            "email": "user4@example.com",
+            "password": "pbkdf2_sha256$150000$XXXXXXXXXXXXXXX",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2023-05-05T00:00:00.000000Z",
+            "date_joined": "2023-05-05T00:00:00.000000Z"
+        }
+    },
+    {
+        "model": "main.postcategory",
+        "pk": 2,
+        "fields": {
+            "title": "JavaScript",
+            "created_at": "2023-05-05T00:00:00.000000Z"
+        }
+    },
+    {
+        "model": "main.postcategory",
+        "pk": 4,
+        "fields": {
+            "title": "Django",
+            "created_at": "2023-05-05T00:00:00.000000Z"
+        }
+    },
+        {
+        "model": "main.post",
+        "pk": 1,
+        "fields": {
+            "title": "My First Post",
+            "content": "Hello world!",
+            "created_at": "2023-05-01T00:00:00.000000Z",
+            "updated_at": "2023-05-01T00:00:00.000000Z",
+            "author": 1,
+            "category": 1,
+            "liked": [1, 2]
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 2,
+        "fields": {
+            "title": "My Second Post",
+            "content": "This is my second post.",
+            "created_at": "2023-05-02T00:00:00.000000Z",
+            "updated_at": "2023-05-02T00:00:00.000000Z",
+            "author": 1,
+            "category": 1,
+            "liked": [1, 2, 3]
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 3,
+        "fields": {
+            "title": "My Third Post",
+            "content": "Here is my third post.",
+            "created_at": "2023-05-03T00:00:00.000000Z",
+            "updated_at": "2023-05-03T00:00:00.000000Z",
+            "author": 2,
+            "category": 1
+        }
+    },
+    {
+        "model": "main.post",
+        "pk": 4,
+        "fields": {
+            "title": "My Fourth Post",
+            "content": "Another post from me!",
+            "created_at": "2023-05-04T00:00:00.000000Z",
+            "updated_at": "2023-05-04T00:00:00.000000Z",
+            "author": 3,
+            "category": 2
+        }
+    },
+    {
+        "model": "main.comment",
+        "pk": 1,
+        "fields": {
+            "post": 1,
+            "author": 2,
+            "created_at": "2023-05-05T00:00:00.000000Z",
+            "updated_at": "2023-05-05T00:00:00.000000Z",
+            "body": "Great post! I learned a lot.",
+            "parent": null,
+            "lft": 1,
+            "rght": 2,
+            "tree_id": 1,
+            "level": 0
+        }
+    },
+    {
+        "model": "main.comment",
+        "pk": 2,
+        "fields": {
+            "post": 1,
+            "author": 3,
+            "created_at": "2023-05-05T00:00:00.000000Z",
+            "updated_at": "2023-05-05T00:00:00.000000Z",
+            "body": "Thanks for sharing. I found this really helpful.",
+            "parent": null,
+            "lft": 3,
+            "rght": 4,
+            "tree_id": 2,
+            "level": 0
+        }
+    },
+    {
+        "model": "main.comment",
+        "pk": 3,
+        "fields": {
+            "post": 1,
+            "author": 4,
+            "created_at": "2023-05-05T00:00:00.000000Z",
+            "updated_at": "2023-05-05T00:00:00.000000Z",
+            "body": "This was a great explanation. I had been struggling to understand this concept for a while.",
+            "parent": null,
+            "lft": 5,
+            "rght": 6,
+            "tree_id": 3,
+            "level": 0
+        }
+    },
+    {
+        "model": "main.comment",
+        "pk": 4,
+        "fields": {
+            "post": 2,
+            "author": 1,
+            "created_at": "2023-05-05T00:00:00.000000Z",
+            "updated_at": "2023-05-05T00:00:00.000000Z",
+            "body": "I'm glad to see someone else is interested in this topic. I've been researching it a lot lately.",
+            "parent": null,
+            "lft": 7,
+            "rght": 8,
+            "tree_id": 4,
+            "level": 0
+        }
+    }
+]
