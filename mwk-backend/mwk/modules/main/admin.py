@@ -15,8 +15,6 @@ from mwk.modules.main.models.post import Post
 
 @admin.register(PostCategory)
 class PostCategoryAdmin(admin.ModelAdmin):
-    """PostCategory model admin"""
-
     list_display = ['id', '__str__', 'created_at']
     list_display_links = ['id', '__str__']
     search_fields = ['id', 'title']
@@ -24,8 +22,6 @@ class PostCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    """Post model admin"""
-
     list_display = [
         'id',
         '__str__',
@@ -68,12 +64,12 @@ class PostAdmin(admin.ModelAdmin):
     def liked_count(self, obj: Post) -> int:
         return obj.liked.count()
 
-    liked_count.short_description = 'Count of likes'
+    liked_count.short_description = 'LIKES COUNT'
 
     def viewers_count(self, obj: Post) -> int:
         return obj.viewers.count()
 
-    viewers_count.short_description = 'Count of views'
+    viewers_count.short_description = 'VIEWS COUNT'
 
     def get_post_photo(self, obj: Post) -> Union[SafeString, str]:
         images = obj.images
@@ -95,8 +91,6 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(MPTTModelAdmin):
-    """Comment model mptt-admin"""
-
     list_display = [
         'id',
         'post'[:50],
@@ -135,7 +129,7 @@ class CommentAdmin(MPTTModelAdmin):
     def liked_count(self, obj: Comment) -> int:
         return obj.liked.count()
 
-    liked_count.short_description = 'Count of likes'
+    liked_count.short_description = 'LIKES COUNT'
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
