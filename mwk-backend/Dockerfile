@@ -1,4 +1,4 @@
-FROM python:3.10.3-alpine
+FROM python:3.11.3-alpine
 
 WORKDIR /mwk/backend
 
