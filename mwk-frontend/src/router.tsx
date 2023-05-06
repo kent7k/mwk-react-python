@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import { Page404 } from './components/pages/Page404'
+import { Login } from './components'
 
 type RouteProps = {
   path: string
@@ -32,7 +32,7 @@ export const Router: React.FC<RouterProps> = ({ routes }) => {
     <BrowserRouter>
       <Routes>
         {routeComponents}
-        <Route path="*" element={<Page404 />} />
+        <Route path="*" element={<Login />} />
       </Routes>
     </BrowserRouter>
   )

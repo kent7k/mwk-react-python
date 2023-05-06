@@ -24,6 +24,17 @@ const routes = [
     component: <Page404 />,
   },
   {
+    // FIXME: The behavior of this code is incorrect in some scenarios.
+    // When the user is not authenticated, they are redirected to the /login/ page.
+    // When the user is authenticated, they are redirected to the /feed/ page.
+    // However, there is currently an issue where the user can access the <Feed /> component
+    // when authenticated, both at the '/' and '/feed/' routes. This behavior is unintended
+    // and needs to be fixed.
+    path: '/',
+    component: <Feed />,
+    protection: <AuthenticationProtectedRoute />,
+  },
+  {
     path: '/register/',
     component: <Register />,
     protection: <AnonymousProtectedRoute />,
